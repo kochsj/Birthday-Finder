@@ -6,6 +6,7 @@ const superagent = require('superagent');
 const pg = require('pg');
 const cors = require('cors');
 const methodOverride = require('method-override');
+const convert = require('xml-js');
 
 // Environment variables
 require('dotenv').config();
