@@ -37,7 +37,7 @@ app.use(methodOverride((req, res) => {
 }));
 
 // Routes
-app.get('/', calendarific);
+app.get('/', homePage);
 // app.get('/show', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
@@ -122,7 +122,7 @@ function randomNumber(arrObj){
 
 ///////////////////////////////////////////////////////////////////////
 //Wikipedia API call
-function wikiCall(req, res){
+function renderDetails(req, res){
   const day = req.body.search.slice(8) //day
   const month = req.body.search.slice(5,7) //month
   const year = req.body.search.slice(0,4) //year
@@ -163,5 +163,6 @@ function Wikipedia(json){
   this.text = json.text;
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
-  this.img = 'https://via.placeholder.com/150';
+  this.img = '';
+  // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
