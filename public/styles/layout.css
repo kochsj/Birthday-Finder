@@ -1,0 +1,170 @@
+.body {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #f4efd3;
+  background-image: radial-gradient(
+    circle farthest-corner at 50% 50%,
+    #f4efd3 100%,
+    #fff
+  );
+}
+
+.imagewrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 90%;
+  height: 500px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-image: radial-gradient(
+    circle farthest-corner at 50% 50%,
+    #ccc 100%,
+    #fff
+  );
+  -webkit-perspective: 4000px;
+  perspective: 4000px;
+  -webkit-transform: translate(0px, 0px);
+  -ms-transform: translate(0px, 0px);
+  transform: translate(0px, 0px);
+}
+
+.image {
+  height: 110%;
+  min-width: 115%;
+  background-image: url("../images/AdobeStock_294922629.jpg");
+  background-position: 50% 50%;
+  background-size: auto 110%;
+  -webkit-transform: translate3d(0px, 0px, -500px);
+  transform: translate3d(0px, 0px, -500px);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.frame {
+  z-index: 5;
+  background-color: #fff;
+}
+
+.frame.top {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: 10%;
+  border-radius: 5px;
+}
+
+.frame.bottom {
+  position: absolute;
+  left: 0%;
+  right: auto;
+  bottom: 0px;
+  width: 100%;
+  height: 10%;
+  border-radius: 5px;
+}
+
+.frame.left {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: auto;
+  width: 7%;
+  height: 100%;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.frame.right {
+  position: absolute;
+  top: 0%;
+  right: 0px;
+  bottom: auto;
+  width: 7%;
+  height: 100%;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.wrap {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 800px;
+  height: 550px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 0px;
+  background-color: #c2b0c9;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(#000),
+    to(#fff)
+  );
+  background-image: linear-gradient(180deg, #000, #fff);
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 400ms;
+  transition-duration: 400ms;
+}
+
+.wrap:active {
+  -webkit-transform: scale(2.8);
+  -ms-transform: scale(2.8);
+  transform: scale(2.8);
+}
+
+.wrap:focus {
+  -webkit-transform: scale(3);
+  -ms-transform: scale(3);
+  transform: scale(3);
+}
+
+.text-field {
+  width: 600px;
+}
+
+.submit-button {
+  position: relative;
+  right: -48px;
+  width: 500px;
+}
+
+.form {
+  background-color: transparent;
+  font-family: "Open Sans", sans-serif;
+}
