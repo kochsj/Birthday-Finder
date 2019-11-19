@@ -45,7 +45,7 @@ app.get('/', homePage);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
 app.post('/searches', weatherHandler);
-app.post('/searches', calendarific);
+// app.post('/searches', calendarific);
 app.post('/saving', saveToDB);
 app.use('*', notFound);
 app.use(errorHandler);
