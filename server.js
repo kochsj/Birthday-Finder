@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 3000;
 // const client = new pg.Client(process.env.DATABASE_URL);
 // client.connect().then(() => {
 // // Make sure the server is listening for requests
-  app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 // });
 // client.on('error', err => console.error(err));
 
@@ -63,31 +63,28 @@ function renderAboutUs(req, res){
 }
 //////////////////////////////////
 function calendarific(req, res) {
-  const url = `https://calendarific.com/api/v2/holidays?&api_key=baa9dc110aa712sd3a9fa2a3dwb6c01d4c875950dc32vs&country=US&year=2019`;
-
-  // const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.API_KEY}&country=${country code}&year=${year-xxxx}&month=${monthxx}&day=${dayxx}`;
-
+  const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.API_KEY}&country=us&year=1982&month=02&day=$24`;
 
   superagent.get(url)
     .then(data =>{
-      let timmy = [];
-      data.response.holidays.forEach((discription)=> {
-        timmy.push(new Holiday(discription));
-        console.log('timmy', timmy);
-      });
-      console.log('data.response.holidays', data.response.holidays);
-      console.log('data', data);
-      res.status(200).json(timmy);
+      console.log(response);
+      // let timmy = [];
+      // data.response.holiday.forEach((response.holiday.discription)=> {
+      //   timmy.push(new Holiday(discription));
+      //   // console.log('timmy', timmy);
+      // });
+      // // console.log('data', data);
+      // res.status(200).json(timmy);
     })
     .catch(error => errorHandler(error,req,res));
 }
 function Holiday( timmy) {
-  this.name = response.holidays[0].name;
-  this.discription = response.holidays[0].discription;
-  this.date = response.holidays[0].date;
-  this.type = response.holidays[0].type;
-  this.locations = response.holidays[0].locations;
-  this.states = response.holidays[0].states;
+  this.name = timmy.response.holidays[0].name;
+  this.discription = timmy.response.holidays[0].discription;
+  this.date = timmy.response.holidays[0].date;
+  this.type = timmy.response.holidays[0].type;
+  this.locations = timmy.response.holidays[0].locations;
+  this.states = timmy.response.holidays[0].states;
 
 
 }
