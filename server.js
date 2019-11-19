@@ -21,13 +21,12 @@ app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 const PORT = process.env.PORT || 3000;
 
-// Database Setup
-const client = new pg.Client(process.env.DATABASE_URL);
-client.connect().then(() => {
-// Make sure the server is listening for requests
+// const client = new pg.Client(process.env.DATABASE_URL);
+// client.connect().then(() => {
+// // Make sure the server is listening for requests
   app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-});
-client.on('error', err => console.error(err));
+// });
+// client.on('error', err => console.error(err));
 
 app.use(methodOverride((req, res) => {
   if(req.body && typeof req.body === 'object' && '_method' in req.body){
@@ -38,7 +37,7 @@ app.use(methodOverride((req, res) => {
 }));
 
 // Routes
-app.get('/', homePage);
+app.get('/', calendarific);
 app.get('/show', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
@@ -64,13 +63,33 @@ function renderAboutUs(req, res){
 }
 //////////////////////////////////
 function calendarific(req, res) {
-  const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.api_key}&country=${country code}&year=${year-xxxx}&month=${month}&day=${day}`;
+  const url = `https://calendarific.com/api/v2/holidays?&api_key=baa9dc110aa712sd3a9fa2a3dwb6c01d4c875950dc32vs&country=US&year=2019`;
+
+  // const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.API_KEY}&country=${country code}&year=${year-xxxx}&month=${monthxx}&day=${dayxx}`;
+
 
   superagent.get(url)
     .then(data =>{
-      console.log(data)
+      let timmy = [];
+      data.response.holidays.forEach((discription)=> {
+        timmy.push(new Holiday(discription));
+        console.log('timmy', timmy);
+      });
+      console.log('data.response.holidays', data.response.holidays);
+      console.log('data', data);
+      res.status(200).json(timmy);
     })
     .catch(error => errorHandler(error,req,res));
+}
+function Holiday( timmy) {
+  this.name = response.holidays[0].name;
+  this.discription = response.holidays[0].discription;
+  this.date = response.holidays[0].date;
+  this.type = response.holidays[0].type;
+  this.locations = response.holidays[0].locations;
+  this.states = response.holidays[0].states;
+
+
 }
 
 ///////////////////////////////////////////////////////////////////////
