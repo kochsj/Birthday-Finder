@@ -16,7 +16,7 @@ const app = express();
 app.use(cors());
 
 //allows us to look inside request.body (usually we can not it returns undefined)
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({extended:true,}));
 app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 const PORT = process.env.PORT || 3000;
@@ -26,7 +26,7 @@ const client = new pg.Client(process.env.DATABASE_URL);
 client.connect().then(() => {
 // Make sure the server is listening for requests
   app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-})
+});
 client.on('error', err => console.error(err));
 
 app.use(methodOverride((req, res) => {
@@ -35,14 +35,14 @@ app.use(methodOverride((req, res) => {
     delete req.body._method;
     return method;
   }
-}))
+}));
 
 // Routes
 app.get('/', homePage);
 app.get('/show', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
-app.post('/searches', renderDetails)
+app.post('/searches', renderDetails);
 app.post('/saving', saveToDB);
 app.use('*', notFound);
 app.use(errorHandler);
@@ -62,6 +62,17 @@ function renderDetails(req, res){
 function renderAboutUs(req, res){
   res.render('pages/aboutus');
 }
+//////////////////////////////////
+function calendarific(req, res) {
+  const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.api_key}&country=${country code}&year=${year-xxxx}&month=${month}&day=${day}`;
+
+  superagent.get(url)
+    .then(data =>{
+      console.log(data)
+    })
+    .catch(error => errorHandler(error,req,res));
+}
+
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
 function renderDatabase(req, res){
@@ -70,8 +81,8 @@ function renderDatabase(req, res){
 ///////////////////////////////////////////////////////////////////////
 //Save Details to Database
 function saveToDB(req, res){
-    //make a SQL query
-    //
+  //make a SQL query
+  //
 }
 ///////////////////////////////////////////////////////////////////////
 //Not Found
