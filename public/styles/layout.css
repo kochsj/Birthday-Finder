@@ -1,3 +1,9 @@
-body {
-    background-color: #F4EFD3
-  }
+main{
+  /* flexbox */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  /* space between the nav and content */
+  padding-top: 10vw;
+}
