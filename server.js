@@ -163,6 +163,6 @@ function Wikipedia(json){
   this.text = json.text;
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
-  this.img = '';
+  this.img = 'url goes here':
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
