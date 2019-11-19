@@ -85,27 +85,6 @@ function errorHandler(error, req, res) {
   console.error(error);
   res.status(500).render('pages/error');
 }
-
-// function searchForBooks(req, res){
-//   const booksSearched = req.body.search[0];
-//   const typeOfSearch = req.body.search[1];
-//   let url =  `https://www.googleapis.com/books/v1/volumes?q=`;
-
-//   if (typeOfSearch === 'title') {
-//     url += `+intitle:${booksSearched}`;
-//   }
-//   if (typeOfSearch === 'author'){
-//     url += `inauthor:${booksSearched}`;
-//   }
-//   superagent.get(url)
-//     .then(results => {
-//       let resArr = results.body.items.map(value => {
-//         return new Book(value);
-//       });
-//       // res.status(200).send(resArr); functional--
-//       res.status(200).render('pages/searches/show', { bookInst: resArr, });
-//     }).catch(error => errorHandler(error, req, res));
-// }
 ///////////////////////////////////////////////////////////////////////
 //Random Number Generator {by length of an object/array}
 function randomNumber(arrObj){
@@ -135,7 +114,6 @@ function wikiCall(req, res){
         let article = new Wikipedia(usersEventsTheirYear[0]);
         console.log('match!!: ');
         console.log(article);
-        // res.status(200).send(article);
         res.status(200).render('pages/show', { event: article })
       } else {
         let randomEvent = randomNumber(jsonData.data.Events);
@@ -143,11 +121,8 @@ function wikiCall(req, res){
         let article = new Wikipedia(usersEventsTheirDay);
         console.log('no match: ')
         console.log(article);
-        // res.status(200).send(article);
         res.status(200).render('pages/show', { event: article })
       }
-      // res.send(usersEventsTheirYear);
-
     }).catch(error => errorHandler(error, req, res));
 }
 
