@@ -41,7 +41,7 @@ app.get('/', homePage);
 // app.get('/show', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
-app.post('/searches', renderDetails);
+app.post('/searches', calendarific);
 app.post('/saving', saveToDB);
 app.use('*', notFound);
 app.use(errorHandler);
@@ -61,35 +61,20 @@ function homePage(req, res){
 function renderAboutUs(req, res){
   res.render('pages/aboutus');
 }
-//////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//Calendar API call
 function calendarific(req, res) {
-  const url = `https://calendarific.com/api/v2/holidays?&api_key=baa9dc110aa712sd3a9fa2a3dwb6c01d4c875950dc32vs&country=US&year=2019`;
-
-  // const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.API_KEY}&country=${country code}&year=${year-xxxx}&month=${monthxx}&day=${dayxx}`;
-
+  const day = req.body.search.slice(8) //day
+  const month = req.body.search.slice(5,7) //month
+  const year = req.body.search.slice(0,4) //year
+  const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.CALENDARIFIC_API}&country=US&year=${year}&day=${day}&month=${month}`;
 
   superagent.get(url)
-    .then(data =>{
-      let timmy = [];
-      data.response.holidays.forEach((discription)=> {
-        timmy.push(new Holiday(discription));
-        console.log('timmy', timmy);
-      });
-      console.log('data.response.holidays', data.response.holidays);
-      console.log('data', data);
-      res.status(200).json(timmy);
-    })
-    .catch(error => errorHandler(error,req,res));
-}
-function Holiday( timmy) {
-  this.name = response.holidays[0].name;
-  this.discription = response.holidays[0].discription;
-  this.date = response.holidays[0].date;
-  this.type = response.holidays[0].type;
-  this.locations = response.holidays[0].locations;
-  this.states = response.holidays[0].states;
-
-
+    .then(data => {
+      let temp = JSON.parse(data.text);
+      let personsHoliday = new Holiday(temp.response.holidays[0]);
+      res.status(200).render('pages/show', { event: personsHoliday })
+    }).catch(error => errorHandler(error, req, res));
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -163,6 +148,17 @@ function Wikipedia(json){
   this.text = json.text;
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
-  this.img = 'url goes here':
+  this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
+
+///////////////////////////////////////////////////////////////////////
+//Calendarrific Constructor
+function Holiday(data){
+  this.year = data.date.iso;
+  this.text = data.description;
+  this.title = data.name;
+  this.link = '';
+  this.img = 'https://cdn.onlinewebfonts.com/svg/img_104943.png';
+}
+
