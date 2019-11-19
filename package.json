@@ -1,7 +1,7 @@
 {
-  "name": "Birthday-Finder",
+  "name": "birthday-finder",
   "version": "1.0.0",
-  "description": "",
+  "description": "Hello World!",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,7 +21,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "ejs": "^2.7.2",
+    "ejs": "^2.7.3",
     "express": "^4.17.1",
     "method-override": "^3.0.0",
     "pg": "^7.12.1",
