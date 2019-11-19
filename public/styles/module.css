@@ -1,3 +1,36 @@
+.submit-button {
+    height: 100px;
+    width: 500px;
+    display: block;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .input-field {
+    height: 100px;
+    width: 500px;
+    display: block;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    height: 400px;
+    width: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #9656a1;
+    align-self: center;
+  }
+
+  body {
+    display: flex;
+    background-color: #f4efd3;
+    justify-content: center;
+  }
+
 /* results template */
 .results-div{
   background-color: #9656a1;
@@ -16,7 +49,7 @@ h3 .results-div{
   font-size: 20px;
 }
 /* search template */
-.searches-form{
+#searches-form{
   background-color: #9656a1;
 }
 
@@ -24,3 +57,4 @@ h3 .searches-form{
   font-size: 25%;
 
 }
+
