@@ -1,37 +1,37 @@
-"use strict";
+'use strict';
 
 // Dependencies
-const express = require("express");
-const superagent = require("superagent");
-const pg = require("pg");
-const cors = require("cors");
-const methodOverride = require("method-override");
-const convert = require("xml-js");
+const express = require('express');
+const superagent = require('superagent');
+const pg = require('pg');
+const cors = require('cors');
+const methodOverride = require('method-override');
+const convert = require('xml-js');
 
 // Environment variables
-require("dotenv").config();
+require('dotenv').config();
 
 // Application Setup
 const app = express();
 app.use(cors());
 
 //allows us to look inside request.body (usually we can not it returns undefined)
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("./public"));
-app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true, }));
+app.use(express.static('./public'));
+app.set('view engine', 'ejs');
 const PORT = process.env.PORT || 3000;
 
 // Database Setup
-const client = new pg.Client(process.env.DATABASE_URL);
-client.connect().then(() => {
-  // Make sure the server is listening for requests
-  app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-});
-client.on("error", err => console.error(err));
+// const client = new pg.Client(process.env.DATABASE_URL);
+// client.connect().then(() => {
+// Make sure the server is listening for requests
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+// });
+// client.on('error', err => console.error(err));
 
 app.use(
   methodOverride((req, res) => {
-    if (req.body && typeof req.body === "object" && "_method" in req.body) {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
       let method = req.body._method;
       delete req.body._method;
       return method;
@@ -52,7 +52,7 @@ app.use(errorHandler);
 ///////////////////////////////////////////////////////////////////////
 //HomePage
 function homePage(req, res) {
-  res.render("pages/index");
+  res.render('pages/index');
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -60,16 +60,16 @@ function homePage(req, res) {
 
 function renderDetails(req, res) {
   let getDateBody = req.body.search;
-  let splitSearch = getDateBody.split("-");
+  let splitSearch = getDateBody.split('-');
   console.log(splitSearch);
   let URL = `http://api.hiztory.org/aviation/${splitSearch[1]}/${splitSearch[2]}/1/15/api.xml`;
   superagent.get(URL).then(result => {
-    let data = convert.xml2js(result.text, { compact: true });
+    let data = convert.xml2js(result.text, { compact: true, });
     // console.log(data.aviation.events.event[0]);
     let events = data.aviation.events.event[0];
     let thisPersonsEvent = new History(events);
     // console.log(events);
-    res.render("pages/show", { event: thisPersonsEvent });
+    res.render('pages/show', { event: thisPersonsEvent, });
   });
 
   // Get the date from Body
@@ -79,16 +79,16 @@ function renderDetails(req, res) {
 }
 
 function History(data) {
-  this.title = "";
+  this.title = '';
   this.year = data._attributes.date;
   this.text = data._attributes.content;
-  this.img = "https://via.placeholder.com/150";
-  this.link = "";
+  this.img = 'https://via.placeholder.com/150';
+  this.link = '';
 }
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
 function renderAboutUs(req, res) {
-  res.render("pages/aboutus");
+  res.render('pages/aboutus');
 }
 //////////////////////////////////
 function calendarific(req, res) {
@@ -96,24 +96,17 @@ function calendarific(req, res) {
 
   superagent.get(url)
     .then(data =>{
-      console.log(response);
-      // let timmy = [];
-      // data.response.holiday.forEach((response.holiday.discription)=> {
-      //   timmy.push(new Holiday(discription));
-      //   // console.log('timmy', timmy);
-      // });
-      // // console.log('data', data);
-      // res.status(200).json(timmy);
-    })
-    .catch(error => errorHandler(error,req,res));
+      let temp = JSON.parse(data.text);
+      let personosHoliday = new Holiday(temp.response.holidays[0]);
+      res.status(200).render('pages/show', { event: personosHoliday,});
+    }).catch(error => errorHandler(error,req,res));
 }
-function Holiday( timmy) {
-  this.name = timmy.response.holidays[0].name;
-  this.discription = timmy.response.holidays[0].discription;
-  this.date = timmy.response.holidays[0].date;
-  this.type = timmy.response.holidays[0].type;
-  this.locations = timmy.response.holidays[0].locations;
-  this.states = timmy.response.holidays[0].states;
+function Holiday( data) {
+  this.year = data.date.iso;
+  this.text = data.discription;
+  this.title = data.name;
+  this.link = '';
+  this.img = '';
 
 
 }
@@ -121,7 +114,7 @@ function Holiday( timmy) {
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
 function renderDatabase(req, res) {
-  res.render("pages/showdb");
+  res.render('pages/showdb');
 }
 ///////////////////////////////////////////////////////////////////////
 //Save Details to Database
@@ -132,13 +125,13 @@ function saveToDB(req, res) {
 ///////////////////////////////////////////////////////////////////////
 //Not Found
 function notFound(req, res) {
-  res.status(404).send("Not Found");
+  res.status(404).send('Not Found');
 }
 ///////////////////////////////////////////////////////////////////////
 //Error Handler
 function errorHandler(error, req, res) {
   console.error(error);
-  res.status(500).render("pages/error");
+  res.status(500).render('pages/error');
 }
 ///////////////////////////////////////////////////////////////////////
 //Random Number Generator {by length of an object/array}
@@ -149,9 +142,9 @@ function randomNumber(arrObj){
 ///////////////////////////////////////////////////////////////////////
 //Wikipedia API call
 function renderDetails(req, res){
-  const day = req.body.search.slice(8) //day
-  const month = req.body.search.slice(5,7) //month
-  const year = req.body.search.slice(0,4) //year
+  const day = req.body.search.slice(8); //day
+  const month = req.body.search.slice(5,7); //month
+  const year = req.body.search.slice(0,4); //year
   let url = `http://history.muffinlabs.com/date/${month}/${day}`;
 
   superagent.get(url)
@@ -169,14 +162,14 @@ function renderDetails(req, res){
         let article = new Wikipedia(usersEventsTheirYear[0]);
         console.log('match!!: ');
         console.log(article);
-        res.status(200).render('pages/show', { event: article })
+        res.status(200).render('pages/show', { event: article, });
       } else {
         let randomEvent = randomNumber(jsonData.data.Events);
         let usersEventsTheirDay = jsonData.data.Events[randomEvent];
         let article = new Wikipedia(usersEventsTheirDay);
-        console.log('no match: ')
+        console.log('no match: ');
         console.log(article);
-        res.status(200).render('pages/show', { event: article })
+        res.status(200).render('pages/show', { event: article, });
       }
     }).catch(error => errorHandler(error, req, res));
 }
@@ -184,11 +177,11 @@ function renderDetails(req, res){
 ///////////////////////////////////////////////////////////////////////
 //Wikipedia Constructor
 function Wikipedia(json){
-  let lastIdx = (json.links.length-1);
+  let lastIdx = (json.links.length - 1);
   this.year = json.year;
   this.text = json.text;
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
-  this.img = 'http://via.placeholder.com/140x160':
+  // this.img = 'http://via.placeholder.com/140x160':
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
