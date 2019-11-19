@@ -10,16 +10,23 @@
 /* result.ejs (results template) */
 /* ////////////////////////////////////////////////////// */
 .results-div{
-  background-color: #9656a1;
-  flex-direction: column;
-  width: auto;
-  height: auto;
+  /* Background Color */
+  background-color: #C2B0C9;
+  /* Layout(technically) just wide enough that only two can fit per row, then flex wrap to the next row */
+  width: 34%;
+  margin-bottom: 10vw;
+  /* Flex Container */
+  flex-direction: row;
+  text-align: center;
+  /* Padding (so that items don't run right into the border of the div) */
+  padding: 2em;
 }
-img .results-div{
-  height: 50%;
-}
-h3 .results-div{
-  font-size: 20px;
+.results-div h3, .results-div p, .results-div img {
+  /* Space between each element in the results template (so they dont touch) */
+  margin-bottom: 1em;
+  /* Padding to push content closer to the center, while still centered */
+  padding-left: 5em;
+  padding-right: 5em;
 }
 /* ////////////////////////////////////////////////////// */
 /* search.ejs (search template) */
