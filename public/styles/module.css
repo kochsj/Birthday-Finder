@@ -1,0 +1,26 @@
+/* results template */
+.results-div{
+  background-color: #9656a1;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+
+}
+
+img .results-div{
+  height: 50%;
+
+}
+
+h3 .results-div{
+  font-size: 20px;
+}
+/* search template */
+.searches-form{
+  background-color: #9656a1;
+}
+
+h3 .searches-form{
+  font-size: 25%;
+
+}
