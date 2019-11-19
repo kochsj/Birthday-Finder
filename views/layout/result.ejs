@@ -1,6 +1,6 @@
-<div class="results-div">
-  <img src="https://via.placeholder.com/150" alt="placeholder">
-  <h3>something searched</h3>
-  <p>to form cool paragraphs</p>
-  <a href=" src="" alt="">
-</div>
+<ul class="results-div">
+  <!-- renders aviation content -->
+  <% for (let event of events){%>
+  <li><%= event._attributes.content %></li>
+  <% }%>
+</ul>
