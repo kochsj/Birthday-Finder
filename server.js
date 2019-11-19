@@ -64,15 +64,25 @@ function renderDetails(req, res) {
   let URL = `http://api.hiztory.org/aviation/${splitSearch[1]}/${splitSearch[2]}/1/15/api.xml`;
   superagent.get(URL).then(result => {
     let data = convert.xml2js(result.text, { compact: true });
-    let events = data.aviation.events.event;
-    console.log(events);
-    res.render("pages/show", { events });
+    // console.log(data.aviation.events.event[0]);
+    let events = data.aviation.events.event[0];
+    let thisPersonsEvent = new History(events);
+    // console.log(events);
+    res.render("pages/show", { event: thisPersonsEvent });
   });
 
   // Get the date from Body
   // Pass data into API
   // Retrieve Data from API
   // Use Data to render template
+}
+
+function History(data) {
+  this.title = "";
+  this.year = data._attributes.date;
+  this.text = data._attributes.content;
+  this.img = "https://via.placeholder.com/150";
+  this.link = "";
 }
 ///////////////////////////////////////////////////////////////////////
 //Render User Details

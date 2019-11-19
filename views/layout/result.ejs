@@ -1,6 +1,6 @@
-<ul class="results-div">
-  <!-- renders aviation content -->
-  <% for (let event of events){%>
-  <li><%= event._attributes.content %></li>
-  <% }%>
-</ul>
+<div class="results-div">
+  <img alt="placeholder" src=<%= event.img %>>
+  <h3><%= event.year %> - <%= event.title %></h3>
+  <p><%= event.text %></p>
+  <a alt="" href="<%= event.link %>" target="_blank">Wikipedia</a>
+</div>
