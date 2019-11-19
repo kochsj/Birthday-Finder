@@ -44,7 +44,7 @@ app.get('/', homePage);
 // app.get('/show', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
-app.post('/searches', renderDetails);
+app.post('/searches', calendarific);
 app.post('/saving', saveToDB);
 app.use('*', notFound);
 app.use(errorHandler);
@@ -90,25 +90,20 @@ function History(data) {
 function renderAboutUs(req, res) {
   res.render('pages/aboutus');
 }
-//////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//Calendar API call
 function calendarific(req, res) {
-  const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.API_KEY}&country=us&year=1982&month=02&day=$24`;
+  const day = req.body.search.slice(8) //day
+  const month = req.body.search.slice(5,7) //month
+  const year = req.body.search.slice(0,4) //year
+  const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.CALENDARIFIC_API}&country=US&year=${year}&day=${day}&month=${month}`;
 
   superagent.get(url)
-    .then(data =>{
+    .then(data => {
       let temp = JSON.parse(data.text);
-      let personosHoliday = new Holiday(temp.response.holidays[0]);
-      res.status(200).render('pages/show', { event: personosHoliday,});
-    }).catch(error => errorHandler(error,req,res));
-}
-function Holiday( data) {
-  this.year = data.date.iso;
-  this.text = data.discription;
-  this.title = data.name;
-  this.link = '';
-  this.img = '';
-
-
+      let personsHoliday = new Holiday(temp.response.holidays[0]);
+      res.status(200).render('pages/show', { event: personsHoliday })
+    }).catch(error => errorHandler(error, req, res));
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -182,6 +177,17 @@ function Wikipedia(json){
   this.text = json.text;
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
-  // this.img = 'http://via.placeholder.com/140x160':
+  this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
+
+///////////////////////////////////////////////////////////////////////
+//Calendarrific Constructor
+function Holiday(data){
+  this.year = data.date.iso;
+  this.text = data.description;
+  this.title = data.name;
+  this.link = '';
+  this.img = 'https://cdn.onlinewebfonts.com/svg/img_104943.png';
+}
+
