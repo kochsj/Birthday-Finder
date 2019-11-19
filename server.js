@@ -44,6 +44,7 @@ app.get('/', homePage);
 // app.get('/show', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
+app.post('/searches', weatherHandler);
 app.post('/searches', calendarific);
 app.post('/saving', saveToDB);
 app.use('*', notFound);
@@ -177,6 +178,53 @@ function Wikipedia(json){
   this.text = json.text;
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
+
+  this.img = 'url goes here';
+  // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
+}
+
+let locationArray = [];
+function ipLookUp () {
+  let url ='http://ip-api.com/json/'
+  superagent.get(url)
+    .then(results => {
+      locationArray = [];
+      locationArray.push(new Location(results.body))
+    })
+}
+ipLookUp();
+
+function Location(info) {
+  this.lat = info.lat;
+  this.lon =info.lon;
+}
+
+function weatherHandler(req, res) {
+  const birthday = req.body.search[0];
+  console.log(req.body.search[0])
+  let epoch = new Date(`${birthday}`).getTime() / 1000
+  let url = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${locationArray[0].lat},${locationArray[0].lon},${epoch}`;
+
+  superagent.get(url)
+    .then(results => {
+      console.log(results.body.daily.data[0])
+      let weatherArray = new Weather(results.body.daily.data[0]);
+      res.status(200).render('pages/show', {event: weatherArray});
+    })
+    .catch(error => errorHandler(error, req, res));
+}
+
+function Weather(weatherObj) {
+  this.img = 'https://cdn2.iconfinder.com/data/icons/generic-06/100/Artboard_123-512.png'
+  this.year = new Date(weatherObj.time * 1000).toISOString().split('T')[0];
+  this.title = 'weather';
+  this.text = `${weatherObj.summary} high: ${weatherObj.temperatureHigh}  low: ${weatherObj.temperatureLow}  sunrise: ${new Date(weatherObj.sunriseTime * 1000).toLocaleTimeString()}  sunset: ${new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()}`
+  // this.summary = weatherObj.summary;
+  // this.high = weatherObj.temperatureHigh;
+  // this.low = weatherObj.temperatureLow;
+  // this.sunrise = new Date(weatherObj.sunriseTime * 1000).toLocaleTimeString()
+  // this.sunset = new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()
+
   this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
@@ -189,5 +237,6 @@ function Holiday(data){
   this.title = data.name;
   this.link = '';
   this.img = 'https://cdn.onlinewebfonts.com/svg/img_104943.png';
+
 }
 
