@@ -1,63 +1,89 @@
-.submit-button {
-    height: 100px;
-    width: 500px;
-    display: block;
-    align-items: center;
-    justify-content: center;
-  }
+/* ////////////////////////////////////////////////////// */
+/* add.ejs (form to add to Database template) */
+/* ////////////////////////////////////////////////////// */
 
-  .input-field {
-    height: 100px;
-    width: 500px;
-    display: block;
-    align-items: center;
-    justify-content: center;
-  }
+/* ////////////////////////////////////////////////////// */
+/* person.ejs (About us -- single person's template) */
+/* ////////////////////////////////////////////////////// */
 
-  .container {
-    height: 400px;
-    width: 700px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background-color: #9656a1;
-    align-self: center;
-  }
-
-  body {
-    display: flex;
-    background-color: #f4efd3;
-    justify-content: center;
-  }
-
-/* results template */
+/* ////////////////////////////////////////////////////// */
+/* result.ejs (results template) */
+/* ////////////////////////////////////////////////////// */
 .results-div{
-  background-color: #9656a1;
-  flex-direction: column;
-  width: auto;
-  height: auto;
-
+  /* Background Color */
+  background-color: #C2B0C9;
+  /* Layout(technically) just wide enough that only two can fit per row, then flex wrap to the next row */
+  width: 34%;
+  margin-bottom: 10vw;
+  /* Flex Container */
+  flex-direction: row;
+  text-align: center;
+  /* Padding (so that items don't run right into the border of the div) */
+  padding: 2em;
 }
-
-img .results-div{
-  height: 50%;
-
+.results-div h3, .results-div p, .results-div img {
+  /* Space between each element in the results template (so they dont touch) */
+  margin-bottom: 1em;
+  /* Padding to push content closer to the center, while still centered */
+  padding-left: 5em;
+  padding-right: 5em;
 }
-
-h3 .results-div{
-  font-size: 20px;
-}
-/* search template */
+/* ////////////////////////////////////////////////////// */
+/* search.ejs (search template) */
+/* ////////////////////////////////////////////////////// */
 #searches-form{
-  background-color: #9656a1;
+  /* Basic Attributes */
+  background-color: #C2B0C9;
+  width: 40vw;
+  border-radius: 1em;
+  /* Text */
+  text-align: center;
 }
-
-h3 .searches-form{
-  font-size: 25%;
+#searches-form h3{
+  font-size: 2.5em;
+  padding: 1em;
 }
+#searches-form input{
+  /* Sizing */
+  height: 4.5em;
+  width: 50%;
+  /* Background Color */
+  background-color: #CCCCCC;
+  /* Text */
+  font-size: 1em;
+  text-align: center;
+  /* Layout center&column */
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+#searches-form button{
+  /* Sizing */
+  height: 3.5em;
+  width: 33%;
+  /* Background Color */
+  background-color: #CCCCCC;
+  border: black solid 0.1em;
+  /* Text */
 
-/* HEADER */
+  /* Layout center&column */
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  /* Margin Top&Bottom */
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+/* ////////////////////////////////////////////////////// */
+/* HEADER.ejs (header template) */
+/* ////////////////////////////////////////////////////// */
+header{
+  /* Background Color */
+  background-color: #9656A1;
+  /* Text */
+  text-align: center;
+  color: #CCCCCC;
+}
 .headerwrapper {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -67,54 +93,32 @@ h3 .searches-form{
 .headerone {
   grid-column: 1 /3 ;
   grid-row: 1;
-  /* border-style: solid;
-  border-width: 1px; */
-  height: auto;
-  text-align: center;
 }
 .headertwo { 
-  grid-column: 3 / 8;
+  grid-column: 3 / 9;
   grid-row: 1;
-  /* border-style: solid;
-  border-width: 1px; */
-  height: auto;
-  text-align: center;
   font-size: 5em;
   line-height: 150px;
 }
-
 .headerthree {
-  grid-column: 8/10;
+  grid-column: 9/11;
   grid-row: 1;
-    /* border-style: solid;
-  border-width: 1px; */
-   height: auto;
-   text-align: center
 }
 .headerfour {
   grid-column:1/3 ;
   grid-row: 2;
-
-   height: 50%;
-   text-align: center;
 }
 .headerfive {
-  grid-column: 3/8;
+  grid-column: 3/9;
   grid-row: 2;
-   height: 50%;
-   text-align: center;
 }
 .headersix {
-  grid-column: 8/10;
+  grid-column: 9/11;
   grid-row: 2;
-   height: 50%;
-   text-align: center;
 }
 .headerimg {
   width: 125px;
-  height: auto;
 }
-
 .headerbutton {
     border-radius: 4px;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);

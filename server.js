@@ -38,7 +38,7 @@ app.use(methodOverride((req, res) => {
 
 // Routes
 app.get('/', calendarific);
-app.get('/show', renderDetails);
+// app.get('/show', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
 app.post('/searches', renderDetails);
@@ -53,9 +53,9 @@ function homePage(req, res){
 }
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
-function renderDetails(req, res){
-  res.render('pages/show');
-}
+// function renderDetails(req, res){
+//   res.render('pages/show');
+// }
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
 function renderAboutUs(req, res){
@@ -113,4 +113,55 @@ function notFound(req, res) {
 function errorHandler(error, req, res) {
   console.error(error);
   res.status(500).render('pages/error');
+}
+///////////////////////////////////////////////////////////////////////
+//Random Number Generator {by length of an object/array}
+function randomNumber(arrObj){
+  return Math.floor(Math.random() * arrObj.length);
+}
+
+///////////////////////////////////////////////////////////////////////
+//Wikipedia API call
+function wikiCall(req, res){
+  const day = req.body.search.slice(8) //day
+  const month = req.body.search.slice(5,7) //month
+  const year = req.body.search.slice(0,4) //year
+  let url = `http://history.muffinlabs.com/date/${month}/${day}`;
+
+  superagent.get(url)
+    .then(results => {
+      let temp = results.body.toString('utf8');
+      let jsonData = JSON.parse(temp);
+
+      let usersEventsTheirYear = jsonData.data.Events.filter(event => {
+        if(event.year === year){
+          return true;
+        }else {return false;}
+      });
+
+      if(usersEventsTheirYear.length > 0){
+        let article = new Wikipedia(usersEventsTheirYear[0]);
+        console.log('match!!: ');
+        console.log(article);
+        res.status(200).render('pages/show', { event: article })
+      } else {
+        let randomEvent = randomNumber(jsonData.data.Events);
+        let usersEventsTheirDay = jsonData.data.Events[randomEvent];
+        let article = new Wikipedia(usersEventsTheirDay);
+        console.log('no match: ')
+        console.log(article);
+        res.status(200).render('pages/show', { event: article })
+      }
+    }).catch(error => errorHandler(error, req, res));
+}
+
+///////////////////////////////////////////////////////////////////////
+//Wikipedia Constructor
+function Wikipedia(json){
+  let lastIdx = (json.links.length-1);
+  this.year = json.year;
+  this.text = json.text;
+  this.title = json.links[lastIdx].title;
+  this.link = json.links[lastIdx].link;
+  this.img = 'https://via.placeholder.com/150';
 }
