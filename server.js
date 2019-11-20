@@ -90,7 +90,7 @@ function History(data) {
   this.title = '';
   this.year = data._attributes.date;
   this.text = data._attributes.content;
-  this.img = 'https://via.placeholder.com/150';
+  this.img = 'https://files.slack.com/files-pri/T039KG69K-FQCGM7Y4S/airplane.png';
   this.link = '';
 }
 ///////////////////////////////////////////////////////////////////////
@@ -139,6 +139,18 @@ function saveToDB(req, res) {
 function showForm(req, res) {
   res.render('saving');
 }
+///////////////////////////////////////////////////////////////////////
+//Update Data Base
+function updateBirthday(req, res){
+  let SQL = 'UPDATE birthdays SET first_name=$1, birthday=$2 WHERE id=$3;';
+  let safeValues = [req.body.first_name, req.body.birthday, ];
+
+  client.query(SQL, safeValues).then(result => {
+    res.status(200).redirect('/database')
+  }).catch(error => errorHandler(error, req, res));
+}
+
+
 ///////////////////////////////////////////////////////////////////////
 //Not Found
 function notFound(req, res) {
@@ -203,7 +215,7 @@ function Wikipedia(json){
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
 
-  this.img = 'url goes here';
+  this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
 
