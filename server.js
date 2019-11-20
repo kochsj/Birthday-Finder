@@ -169,8 +169,7 @@ function notFound(req, res) {
 //Error Handler
 function errorHandler(error, req, res) {
   console.error(error);
-  // res.status(500).render('pages/error');
-  res.status(500).send(error);
+  res.status(500).render('pages/error');
 }
 ///////////////////////////////////////////////////////////////////////
 //Random Number Generator {by length of an object/array}
