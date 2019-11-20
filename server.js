@@ -46,6 +46,7 @@ app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
 app.post('/searches', weatherHandler);
 app.put('/update/:id', updateBirthday);
+app.delete('/delete/:id', deleteBirthday);
 // app.post('/searches', calendarific);
 app.get('/saving', showForm)
 app.post('/saving', saveToDB);
