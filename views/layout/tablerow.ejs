@@ -2,14 +2,40 @@
         <th>Name</th>
         <th>Birthday</th>
         <th>Link</th>
+        <th>update/delete</th>
     </tr>
 <% person.forEach(bday => { %>
-    <tr>
+    <tr id=<%= bday.id%>>
         <td><%= bday.first_name %></td>
         <td><%= bday.birthday %></td>
         <td> <form action="/searches" method="post">
         <input type="hidden" name="search" value=<%= bday.birthday %>>
         <button>Go</button>
-        </form></td>
+        </form>
+        </td>
+        <td>
+    <button class="open-button" onclick="openForm()">Update</button>
+    <div class="form-popup" id="myForm">
+    <form action="/saving" class="form-container" method="post">
+    <input type="text"  name="first_name" value="<%=bday.first_name%>" required>
+    <input type="text" name="birthday" value="<%=bday.birthday%>" required>
+    <input type="hidden" name="id" value="<%=bday.id%>">
+    <button type="submit" class="btn">Save changes</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+</td>
+    
     </tr>
 <% }) %>
+
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
