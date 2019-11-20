@@ -128,4 +128,40 @@ header{
     background-color: lightblue;
     border: 2px solid black;
 }
+.headerLink {
+  color:white;
+}
 
+.headerAboutUs {
+color:black;
+}
+
+.team {
+  width: 75%;
+  margin-top: 0px;
+}
+
+th{
+  border: 1px solid black;
+  background-color: #F4EFD3;
+  color: black;
+  width: 400px;
+  padding: 5px;
+  font-family:'PT Sans Narrow', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  line-height: 40px;
+} 
+
+td{
+  border: 1px solid black;
+  background-color: #F4EFD3;
+  color: black;
+  width: 400px;
+  padding: 5px;
+  font-family:'PT Sans Narrow', sans-serif;
+  font-size: 1p6x;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+} 
