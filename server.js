@@ -22,12 +22,12 @@ app.set('view engine', 'ejs');
 const PORT = process.env.PORT || 3000;
 
 // Database Setup
-// const client = new pg.Client(process.env.DATABASE_URL);
-// client.connect().then(() => {
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect().then(() => {
 // Make sure the server is listening for requests
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-// });
-// client.on('error', err => console.error(err));
+  app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+});
+client.on('error', err => console.error(err));
 
 app.use(
   methodOverride((req, res) => {
@@ -111,13 +111,18 @@ function calendarHandler(array, renderArray) {
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
 function renderDatabase(req, res) {
-  res.render('pages/showdb');
+  let SQL = `SELECT * FROM birthdays`;
+
+  client.query(SQL).then(result => {
+    res.render('pages/showdb', { person: result.rows});
+  })
 }
 ///////////////////////////////////////////////////////////////////////
 //Save Details to Database
 function saveToDB(req, res) {
   //make a SQL query
-  //
+// INSERT INTO birthdays (first_name, birthday, link)
+// VALUES('Stephen', '09/24', 'sample link');
 }
 ///////////////////////////////////////////////////////////////////////
 //Not Found
@@ -128,7 +133,8 @@ function notFound(req, res) {
 //Error Handler
 function errorHandler(error, req, res) {
   console.error(error);
-  res.status(500).render('pages/error');
+  // res.status(500).render('pages/error');
+  res.status(500).send(error);
 }
 ///////////////////////////////////////////////////////////////////////
 //Random Number Generator {by length of an object/array}
