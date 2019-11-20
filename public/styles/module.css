@@ -9,9 +9,9 @@
 /* ////////////////////////////////////////////////////// */
 /* result.ejs (results template) */
 /* ////////////////////////////////////////////////////// */
-.results-div{
+.results-div {
   /* Background Color */
-  background-color: #C2B0C9;
+  background-color: #c2b0c9;
   /* Layout(technically) just wide enough that only two can fit per row, then flex wrap to the next row */
   width: 34%;
   margin-bottom: 10vw;
@@ -21,37 +21,39 @@
   /* Padding (so that items don't run right into the border of the div) */
   padding: 2em;
 }
-.results-div h3, .results-div p, .results-div img {
+.results-div h3,
+.results-div p,
+.results-div img {
   /* Space between each element in the results template (so they dont touch) */
   margin-bottom: 1em;
   /* Padding to push content closer to the center, while still centered */
   padding-left: 5em;
   padding-right: 5em;
 }
-.results-div img{
+.results-div img {
   width: 50%;
 }
 /* ////////////////////////////////////////////////////// */
 /* search.ejs (search template) */
 /* ////////////////////////////////////////////////////// */
-#searches-form{
+#searches-form {
   /* Basic Attributes */
-  background-color: #C2B0C9;
+  background-color: #c2b0c9;
   width: 40vw;
   border-radius: 1em;
   /* Text */
   text-align: center;
 }
-#searches-form h3{
+#searches-form h3 {
   font-size: 2.5em;
   padding: 1em;
 }
-#searches-form input{
+#searches-form input {
   /* Sizing */
   height: 4.5em;
   width: 50%;
   /* Background Color */
-  background-color: #CCCCCC;
+  background-color: #cccccc;
   /* Text */
   font-size: 1em;
   text-align: center;
@@ -60,12 +62,12 @@
   margin-right: auto;
   margin-left: auto;
 }
-#searches-form button{
+#searches-form button {
   /* Sizing */
   height: 3.5em;
   width: 33%;
   /* Background Color */
-  background-color: #CCCCCC;
+  background-color: #cccccc;
   border: black solid 0.1em;
   /* Text */
 
@@ -80,12 +82,12 @@
 /* ////////////////////////////////////////////////////// */
 /* HEADER.ejs (header template) */
 /* ////////////////////////////////////////////////////// */
-header{
+header {
   /* Background Color */
-  background-color: #9656A1;
+  background-color: #9656a1;
   /* Text */
   text-align: center;
-  color: #CCCCCC;
+  color: #cccccc;
 }
 .headerwrapper {
   display: grid;
@@ -94,10 +96,10 @@ header{
   grid-auto-rows: minmax(0px, auto);
 }
 .headerone {
-  grid-column: 1 /3 ;
+  grid-column: 1 /3;
   grid-row: 1;
 }
-.headertwo { 
+.headertwo {
   grid-column: 3 / 9;
   grid-row: 1;
   font-size: 5em;
@@ -108,7 +110,7 @@ header{
   grid-row: 1;
 }
 .headerfour {
-  grid-column:1/3 ;
+  grid-column: 1/3;
   grid-row: 2;
 }
 .headerfive {
@@ -123,23 +125,24 @@ header{
   width: 125px;
 }
 .headerbutton {
-    border-radius: 4px;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    background-color: lightblue;
-    border: 2px solid black;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background-color: lightblue;
+  border: 2px solid black;
 }
 .headerLink {
-  color:white;
+  color: white;
 }
 
 .headerAboutUs {
-color:black;
+  color: black;
 }
 
 .team {
   width: 75%;
   margin-top: 0px;
 }
+
 /* ///////////////////////////////////////////////////////////////////////////// */
 /* Table Row EJS */
 /* ///////////////////////////////////////////////////////////////////////////// */
@@ -148,18 +151,18 @@ table{
 }
 th{
   border: 1px solid black;
-  /* background-color: #F4EFD3; */
+  background-color: #f4efd3;
   color: black;
   width: 400px;
   font-family:'PT Sans Narrow', sans-serif;
   font-size: 20px;
   height: 40px;
   line-height: 40px;
-} 
+}
 
-td{
+td {
   border: 1px solid black;
-  /* background-color: #F4EFD3; */
+  background-color: #f4efd3;
   color: black;
   width: 400px;
   font-family:'PT Sans Narrow', sans-serif;
@@ -169,6 +172,8 @@ td{
   height: 40px;
   line-height: 40px;
 } 
+
+
 .linkToBirthday{
   background-color: #555;
   color: white;
@@ -177,12 +182,39 @@ td{
   cursor: pointer;
   width: 83%;
   height: 100%;
-  opacity: 0.8;
 }
-.linkToBirthday button{
-  background-color: #555;
-  color: white;
-  border: none;
-  cursor: pointer;
 
+#spinner {
+  visibility: hidden;
+  width: 150px;
+  height: 150px;
+
+  border: 10px solid #f3f3f3;
+  border-top: 15px solid #9656a1;
+  border-radius: 100%;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  animation: spin 1s infinite linear;
 }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#spinner.show {
+  visibility: visible;
+}
+
+
+
