@@ -44,17 +44,21 @@ app.get('/', homePage);
 app.post('/searches', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
-// app.post('/searches', weatherHandler);
+
+app.post('/searches', weatherHandler);
+
 // app.post('/searches', calendarific);
 app.post('/saving', saveToDB);
 app.use('*', notFound);
 app.use(errorHandler);
+
 
 ///////////////////////////////////////////////////////////////////////
 //HomePage
 function homePage(req, res) {
   res.render('pages/index');
 }
+
 
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
@@ -227,7 +231,11 @@ function Weather(weatherObj) {
   // this.high = weatherObj.temperatureHigh;
   // this.low = weatherObj.temperatureLow;
   // this.sunrise = new Date(weatherObj.sunriseTime * 1000).toLocaleTimeString()
-  // this.sunset = new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()';
+
+  // this.sunset = new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()
+
+
+
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
 

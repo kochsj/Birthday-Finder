@@ -128,4 +128,15 @@ header{
     background-color: lightblue;
     border: 2px solid black;
 }
+.headerLink {
+  color:white;
+}
 
+.headerAboutUs {
+color:black;
+}
+
+.team {
+  width: 75%;
+  margin-top: 0px;
+}
