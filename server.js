@@ -44,9 +44,8 @@ app.get('/', homePage);
 app.post('/searches', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
-
 app.post('/searches', weatherHandler);
-
+app.put('/update/:id', updateBirthday);
 // app.post('/searches', calendarific);
 app.get('/saving', showForm)
 app.post('/saving', saveToDB);
@@ -128,7 +127,7 @@ function renderDatabase(req, res) {
 //Save Details to Database
 function saveToDB(req, res) {
   let {first_name, birthday} = req.body;
-  let SQL = 'INSERT INTO birthdays(first_name, birthday) VALUES ($1, $2);';
+  let SQL = 'INSERT INTO birthdays(first_name, birthday, id) VALUES ($1, $2, $3);';
   let values = [first_name, birthday];
 
   client.query(SQL, values)

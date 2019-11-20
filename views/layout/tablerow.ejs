@@ -2,7 +2,8 @@
         <th>Name</th>
         <th>Birthday</th>
         <th>Link</th>
-        <th>update/delete</th>
+
+        <th>Update/Delete</th>
     </tr>
 <% person.forEach(bday => { %>
     <tr id=<%= bday.id%>>
@@ -13,16 +14,19 @@
         <button>Go</button>
         </form>
         </td>
-        <td>
-    <button class="open-button" onclick="openForm()">Update</button>
-    <div class="form-popup" id="myForm">
-    <form action="/saving" class="form-container" method="post">
-    <input type="text"  name="first_name" value="<%=bday.first_name%>" required>
-    <input type="text" name="birthday" value="<%=bday.birthday%>" required>
-    <input type="hidden" name="id" value="<%=bday.id%>">
+    <td>
+    <button class="open-button" onclick="openForm(<%=bday.id%>)">Update</button>
+    <div class="form-popup" id="myForm<%=bday.id%>"">
+    <form action="/update/<%=bday.id%>" class="form-container" method="post">
+    <input type="hidden" name="_method" value="put">
+    <input type="text"  name="first_name" value=<%=bday.first_name%>>
+    <input type="text" name="birthday" value=<%=bday.birthday%>>
+    <input type="hidden" name="id" value=<%=bday.id%>>
     <button type="submit" class="btn">Save changes</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    <button type="button" class="btn cancel" onclick="closeForm(<%=bday.id%>)">Close</button>
   </form>
+  
+  
 </div>
 </td>
     
@@ -31,11 +35,11 @@
 
 
 <script>
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
+function openForm(x) {
+  document.getElementById(`myForm${x}`).style.display = "block";
 }
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
+function closeForm(x) {
+  document.getElementById(`myForm${x}`).style.display = "none";
 }
 </script>
