@@ -41,11 +41,11 @@ app.use(
 
 // Routes
 app.get('/', homePage);
-// app.get('/show', renderDetails);
+app.post('/searches', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
-app.post('/searches', weatherHandler);
-app.post('/searches', calendarific);
+// app.post('/searches', weatherHandler);
+// app.post('/searches', calendarific);
 app.post('/saving', saveToDB);
 app.use('*', notFound);
 app.use(errorHandler);
@@ -59,18 +59,18 @@ function homePage(req, res) {
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
 
-function renderDetails(req, res) {
-  let getDateBody = req.body.search;
-  let splitSearch = getDateBody.split('-');
-  console.log(splitSearch);
-  let URL = `http://api.hiztory.org/aviation/${splitSearch[1]}/${splitSearch[2]}/1/15/api.xml`;
+function historyHandler(array, renderArray) {
+  const day = array[2]; //day
+  const month = array[1]; //month
+  let URL = `http://api.hiztory.org/aviation/${month}/${day}/1/15/api.xml`;
   superagent.get(URL).then(result => {
     let data = convert.xml2js(result.text, { compact: true, });
     // console.log(data.aviation.events.event[0]);
     let events = data.aviation.events.event[0];
     let thisPersonsEvent = new History(events);
     // console.log(events);
-    res.render('pages/show', { event: thisPersonsEvent, });
+    renderArray.push(thisPersonsEvent);
+    console.log('history render array: ' , renderArray);
   });
 
   // Get the date from Body
@@ -93,17 +93,18 @@ function renderAboutUs(req, res) {
 }
 ///////////////////////////////////////////////////////////////////////
 //Calendar API call
-function calendarific(req, res) {
-  const day = req.body.search.slice(8) //day
-  const month = req.body.search.slice(5,7) //month
-  const year = req.body.search.slice(0,4) //year
+function calendarHandler(array, renderArray) {
+  const day = array[2]; //day
+  const month = array[1]; //month
+  const year = array[0]; //year
   const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.CALENDARIFIC_API}&country=US&year=${year}&day=${day}&month=${month}`;
 
   superagent.get(url)
     .then(data => {
       let temp = JSON.parse(data.text);
       let personsHoliday = new Holiday(temp.response.holidays[0]);
-      res.status(200).render('pages/show', { event: personsHoliday })
+      renderArray.push(personsHoliday);
+      console.log('calendar render array: ' , renderArray);
     }).catch(error => errorHandler(error, req, res));
 }
 
@@ -137,10 +138,10 @@ function randomNumber(arrObj){
 
 ///////////////////////////////////////////////////////////////////////
 //Wikipedia API call
-function renderDetails(req, res){
-  const day = req.body.search.slice(8); //day
-  const month = req.body.search.slice(5,7); //month
-  const year = req.body.search.slice(0,4); //year
+function wikiHandler(array, renderArray){
+  const day = array[2]; //day
+  const month = array[1]; //month
+  const year = array[0]; //year
   let url = `http://history.muffinlabs.com/date/${month}/${day}`;
 
   superagent.get(url)
@@ -158,14 +159,16 @@ function renderDetails(req, res){
         let article = new Wikipedia(usersEventsTheirYear[0]);
         console.log('match!!: ');
         console.log(article);
-        res.status(200).render('pages/show', { event: article, });
+        renderArray.push(article);
+        console.log('wiki render array: ' , renderArray);
       } else {
         let randomEvent = randomNumber(jsonData.data.Events);
         let usersEventsTheirDay = jsonData.data.Events[randomEvent];
         let article = new Wikipedia(usersEventsTheirDay);
         console.log('no match: ');
         console.log(article);
-        res.status(200).render('pages/show', { event: article, });
+        renderArray.push(article);
+        console.log('wiki render array: ' , renderArray);
       }
     }).catch(error => errorHandler(error, req, res));
 }
@@ -199,17 +202,18 @@ function Location(info) {
   this.lon =info.lon;
 }
 
-function weatherHandler(req, res) {
-  const birthday = req.body.search[0];
-  console.log(req.body.search[0])
+function weatherHandler(string, renderArray) {
+  const birthday = string;
+  // console.log('search: ' , string)
   let epoch = new Date(`${birthday}`).getTime() / 1000
   let url = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${locationArray[0].lat},${locationArray[0].lon},${epoch}`;
 
   superagent.get(url)
     .then(results => {
-      console.log(results.body.daily.data[0])
       let weatherArray = new Weather(results.body.daily.data[0]);
-      res.status(200).render('pages/show', {event: weatherArray});
+      console.log('weather data: ' , weatherArray);
+      renderArray.push(weatherArray);
+      console.log('render array: ' , renderArray);
     })
     .catch(error => errorHandler(error, req, res));
 }
@@ -223,14 +227,12 @@ function Weather(weatherObj) {
   // this.high = weatherObj.temperatureHigh;
   // this.low = weatherObj.temperatureLow;
   // this.sunrise = new Date(weatherObj.sunriseTime * 1000).toLocaleTimeString()
-  // this.sunset = new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()
-
-  this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
+  // this.sunset = new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()';
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
 
 ///////////////////////////////////////////////////////////////////////
-//Calendarrific Constructor
+// Calendarrific Constructor
 function Holiday(data){
   this.year = data.date.iso;
   this.text = data.description;
@@ -240,3 +242,112 @@ function Holiday(data){
 
 }
 
+///////////////////////////////////////////////////////////////////////
+// Calling all functions function
+function callingAllFunctions(weather, wiki, history, calendar, arrayOfDates, stringOfDates, renderArray){
+  weather(stringOfDates, renderArray);
+  wiki(arrayOfDates, renderArray);
+  calendar(arrayOfDates, renderArray);
+  history(arrayOfDates, renderArray);
+  return renderArray;
+}
+
+function renderDetails(req, res){
+  // res.send('hello world');
+  const day = req.body.search.slice(8); //day
+  const month = req.body.search.slice(5,7); //month
+  const year = req.body.search.slice(0,4); //year
+
+  const dateStr = req.body.search;
+  // const dateArr = [year, month, day];
+
+  let renderArr = [];
+
+  let epoch = new Date(`${dateStr}`).getTime() / 1000
+  let weatherUrl = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${locationArray[0].lat},${locationArray[0].lon},${epoch}`;
+
+  superagent.get(weatherUrl)
+    .then(results => {
+      let weatherArray = new Weather(results.body.daily.data[0]);
+      console.log('weather data: ' , weatherArray);
+      renderArr.push(weatherArray);
+      console.log('render array: ' , renderArr);
+    }).then(results => {
+      /////////////////wiki call
+      let wikiUrl = `http://history.muffinlabs.com/date/${month}/${day}`;
+      superagent.get(wikiUrl)
+        .then(results => {
+          let temp = results.body.toString('utf8');
+          let jsonData = JSON.parse(temp);
+
+          let usersEventsTheirYear = jsonData.data.Events.filter(event => {
+            if(event.year === year){
+              return true;
+            }else {return false;}
+          });
+
+          if(usersEventsTheirYear.length > 0){
+            let article = new Wikipedia(usersEventsTheirYear[0]);
+            console.log('match!!: ');
+            console.log(article);
+            renderArr.push(article);
+            console.log('wiki render array: ' , renderArr);
+          } else {
+            let randomEvent = randomNumber(jsonData.data.Events);
+            let usersEventsTheirDay = jsonData.data.Events[randomEvent];
+            let article = new Wikipedia(usersEventsTheirDay);
+            console.log('no match: ');
+            console.log(article);
+            renderArr.push(article);
+            console.log('wiki render array: ' , renderArr);
+          }
+        }).then(results => {
+          const calendarUrl = `https://calendarific.com/api/v2/holidays?api_key=${process.env.CALENDARIFIC_API}&country=US&year=${year}&day=${day}&month=${month}`;
+          superagent.get(calendarUrl)
+            .then(data => {
+              let temp = JSON.parse(data.text);
+              if(temp.response.holidays.length > 0){
+                let personsHoliday = new Holiday(temp.response.holidays[0]);
+                renderArr.push(personsHoliday);
+              }
+              console.log('calendar render array: ' , renderArr);
+            }).then(results => {
+              let hiztoryUrl = `http://api.hiztory.org/aviation/${month}/${day}/1/15/api.xml`;
+              superagent.get(hiztoryUrl).then(result => {
+                let data = convert.xml2js(result.text, { compact: true, });
+                let events = data.aviation.events.event[0];
+                let thisPersonsEvent = new History(events);
+                renderArr.push(thisPersonsEvent);
+                console.log('history render array: ' , renderArr);
+              }).then(results => {
+                res.status(200).render('pages/show', { event: renderArr })
+              }).catch(error => errorHandler(error, req, res));
+            }).catch(error => errorHandler(error, req, res));// calendar results promise end
+        }).catch(error => errorHandler(error, req, res)); //wiki results promise end
+
+    }).catch(error => errorHandler(error, req, res)); //weather results promise end
+
+  // console.log(dateStr);
+  // console.log(dateArr);
+  // callingAllFunctions(weatherHandler, wikiHandler, historyHandler, calendarHandler, dateArr, dateStr, renderArr);
+  // if(renderArr.length === 4){
+  //   res.status(200).render('pages/show', { event: renderArr });
+}
+
+
+// weatherOne (dateStr){
+//   url =something
+
+//   superagent(url).then(result => {
+//     renderArr.push(result);
+//   })
+// }
+
+// render array: [
+//   {weather results}
+//   {history results}
+//   {cal results}
+//   {wiki results}
+// ]
+
+// event.foreach(make a div using the data)
