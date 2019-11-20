@@ -140,6 +140,18 @@ function showForm(req, res) {
   res.render('saving');
 }
 ///////////////////////////////////////////////////////////////////////
+//Update Data Base
+function updateBirthday(req, res){
+  let SQL = 'UPDATE birthdays SET first_name=$1, birthday=$2 WHERE id=$3;';
+  let safeValues = [req.body.first_name, req.body.birthday, ];
+
+  client.query(SQL, safeValues).then(result => {
+    res.status(200).redirect('/database')
+  }).catch(error => errorHandler(error, req, res));
+}
+
+
+///////////////////////////////////////////////////////////////////////
 //Not Found
 function notFound(req, res) {
   res.status(404).send('Not Found');
