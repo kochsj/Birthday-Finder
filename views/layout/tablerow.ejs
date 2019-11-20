@@ -1,0 +1,12 @@
+    <tr>
+        <th>Name</th>
+        <th>Birthday</th>
+        <th>Link</th>
+    </tr>
+<% person.forEach(bday => { %>
+    <tr>
+        <td><%= bday.first_name %></td>
+        <td><%= bday.birthday %></td>
+        <td><%= bday.link %></td>
+    </tr>
+<% }) %>
