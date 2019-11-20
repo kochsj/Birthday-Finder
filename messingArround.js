@@ -253,7 +253,9 @@ function callingAllFunctions(weather, wiki, history, calendar, arrayOfDates, str
   });
 }
 
-
+var rendering = async function(x){
+    let a =
+}
 
 function renderDetails(req, res){
   const day = req.body.search.slice(8); //day
