@@ -127,7 +127,7 @@ function renderDatabase(req, res) {
 //Save Details to Database
 function saveToDB(req, res) {
   let {first_name, birthday} = req.body;
-  let SQL = 'INSERT INTO birthdays(first_name, birthday, id) VALUES ($1, $2, $3);';
+  let SQL = 'INSERT INTO birthdays(first_name, birthday) VALUES ($1, $2);';
   let values = [first_name, birthday];
 
   client.query(SQL, values)
@@ -152,7 +152,7 @@ function updateBirthday(req, res){
 //Delete From Data Base
 function deleteBirthday(req, res){
   let SQL = 'DELETE FROM birthdays WHERE id=$1;';
-  let safeValue = [req.body.id];
+  let safeValue = [req.params.id];
 
   client.query(SQL, safeValue).then(result => {
     res.status(200).redirect('/database')
@@ -168,8 +168,7 @@ function notFound(req, res) {
 //Error Handler
 function errorHandler(error, req, res) {
   console.error(error);
-  // res.status(500).render('pages/error');
-  res.status(500).send(error);
+  res.status(500).render('pages/error');
 }
 ///////////////////////////////////////////////////////////////////////
 //Random Number Generator {by length of an object/array}
