@@ -143,9 +143,12 @@ color:black;
 /* ///////////////////////////////////////////////////////////////////////////// */
 /* Table Row EJS */
 /* ///////////////////////////////////////////////////////////////////////////// */
+table{
+  background-color: #C2B0C9;
+}
 th{
   border: 1px solid black;
-  background-color: #F4EFD3;
+  /* background-color: #F4EFD3; */
   color: black;
   width: 400px;
   font-family:'PT Sans Narrow', sans-serif;
@@ -156,7 +159,7 @@ th{
 
 td{
   border: 1px solid black;
-  background-color: #F4EFD3;
+  /* background-color: #F4EFD3; */
   color: black;
   width: 400px;
   font-family:'PT Sans Narrow', sans-serif;
@@ -172,6 +175,14 @@ td{
   padding: 1em 1.5em;
   border: none;
   cursor: pointer;
-  width: 100%;
+  width: 83%;
   height: 100%;
+  opacity: 0.8;
+}
+.linkToBirthday button{
+  background-color: #555;
+  color: white;
+  border: none;
+  cursor: pointer;
+
 }

@@ -11,9 +11,9 @@
         <td><%= bday.first_name %></td>
         <td><%= bday.birthday %></td>
         <td> 
-            <form action="/searches" method="post">
+            <form class="linkToBirthday" action="/searches" method="post">
                 <input type="hidden" name="search" value=<%= bday.birthday %>>
-                <button>Go</button>
+                <button>Check it out!</button>
             </form>
         </td>
         <td>
@@ -33,7 +33,7 @@
         <form class="deleteForm"action="/delete/<%=bday.id%>" method="post">
         <input type="hidden" name="_method" value="delete">
         </form>
-        <button class ="open-button-two"type="submit"  id="<%= bday.id %>">delete book</button>
+        <button class ="open-button-two"type="submit"  id="<%= bday.id %>">Delete</button>
      </td>
         
     </tr>

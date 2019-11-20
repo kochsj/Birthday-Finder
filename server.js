@@ -28,7 +28,7 @@ client.connect().then(() => {
   app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 });
 client.on('error', err => console.error(err));
-
+//Method Override node module
 app.use(
   methodOverride((req, res) => {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -47,12 +47,12 @@ app.get('/database', renderDatabase);
 app.post('/searches', weatherHandler);
 app.put('/update/:id', updateBirthday);
 app.delete('/delete/:id', deleteBirthday);
-// app.post('/searches', calendarific);
 app.get('/saving', showForm)
 app.post('/saving', saveToDB);
 app.use('*', notFound);
 app.use(errorHandler);
 
+// Getting today's date
 app.locals.today = new Date().toISOString().split('T')[0];
 
 
@@ -62,57 +62,10 @@ function homePage(req, res) {
   res.render('pages/index');
 }
 
-
-///////////////////////////////////////////////////////////////////////
-//Render User Details
-
-function historyHandler(array, renderArray) {
-  const day = array[2]; //day
-  const month = array[1]; //month
-  let URL = `http://api.hiztory.org/aviation/${month}/${day}/1/15/api.xml`;
-  superagent.get(URL).then(result => {
-    let data = convert.xml2js(result.text, { compact: true, });
-    // console.log(data.aviation.events.event[0]);
-    let events = data.aviation.events.event[0];
-    let thisPersonsEvent = new History(events);
-    // console.log(events);
-    renderArray.push(thisPersonsEvent);
-    console.log('history render array: ' , renderArray);
-  });
-
-  // Get the date from Body
-  // Pass data into API
-  // Retrieve Data from API
-  // Use Data to render template
-}
-
-function History(data) {
-  this.title = '';
-  this.year = data._attributes.date;
-  this.text = data._attributes.content;
-  this.img = 'https://files.slack.com/files-pri/T039KG69K-FQCGM7Y4S/airplane.png';
-  this.link = '';
-}
 ///////////////////////////////////////////////////////////////////////
 //Render User Details
 function renderAboutUs(req, res) {
   res.render('pages/aboutus');
-}
-///////////////////////////////////////////////////////////////////////
-//Calendar API call
-function calendarHandler(array, renderArray) {
-  const day = array[2]; //day
-  const month = array[1]; //month
-  const year = array[0]; //year
-  const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.CALENDARIFIC_API}&country=US&year=${year}&day=${day}&month=${month}`;
-
-  superagent.get(url)
-    .then(data => {
-      let temp = JSON.parse(data.text);
-      let personsHoliday = new Holiday(temp.response.holidays[0]);
-      renderArray.push(personsHoliday);
-      console.log('calendar render array: ' , renderArray);
-    }).catch(error => errorHandler(error, req, res));
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -135,12 +88,12 @@ function saveToDB(req, res) {
     .then(res.redirect('/database'))
     .catch( err => console.error(err));
 }
-
+//turns get to post
 function showForm(req, res) {
   res.render('saving');
 }
 ///////////////////////////////////////////////////////////////////////
-//Update Data Base
+//Update Database
 function updateBirthday(req, res){
   let SQL = 'UPDATE birthdays SET first_name=$1, birthday=$2 WHERE id=$3;';
   let safeValues = [req.body.first_name, req.body.birthday, req.body.id];
@@ -150,7 +103,7 @@ function updateBirthday(req, res){
   }).catch(error => errorHandler(error, req, res));
 }
 ///////////////////////////////////////////////////////////////////////
-//Delete From Data Base
+//Delete From Database
 function deleteBirthday(req, res){
   let SQL = 'DELETE FROM birthdays WHERE id=$1;';
   let safeValue = [req.params.id];
@@ -159,7 +112,6 @@ function deleteBirthday(req, res){
     res.status(200).redirect('/database')
   }).catch(error => errorHandler(error, req, res));
 }
-
 ///////////////////////////////////////////////////////////////////////
 //Not Found
 function notFound(req, res) {
@@ -178,7 +130,38 @@ function randomNumber(arrObj){
 }
 
 ///////////////////////////////////////////////////////////////////////
-//Wikipedia API call
+///////////////////////////////////////////////////////////////////////
+//History API Call
+///////////////////////////////////////////////////////////////////////
+function historyHandler(array, renderArray) {
+  const day = array[2]; //day
+  const month = array[1]; //month
+  let URL = `http://api.hiztory.org/aviation/${month}/${day}/1/15/api.xml`;
+  superagent.get(URL).then(result => {
+    let data = convert.xml2js(result.text, { compact: true, });
+    // console.log(data.aviation.events.event[0]);
+    let events = data.aviation.events.event[0];
+    let thisPersonsEvent = new History(events);
+    // console.log(events);
+    renderArray.push(thisPersonsEvent);
+    console.log('history render array: ' , renderArray);
+  });
+}
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//History Constructor
+///////////////////////////////////////////////////////////////////////
+function History(data) {
+  this.title = '';
+  this.year = data._attributes.date;
+  this.text = data._attributes.content;
+  this.img = 'https://files.slack.com/files-pri/T039KG69K-FQCGM7Y4S/airplane.png';
+  this.link = '';
+}
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//Wikipedia API Call
+///////////////////////////////////////////////////////////////////////
 function wikiHandler(array, renderArray){
   const day = array[2]; //day
   const month = array[1]; //month
@@ -213,9 +196,10 @@ function wikiHandler(array, renderArray){
       }
     }).catch(error => errorHandler(error, req, res));
 }
-
+///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 //Wikipedia Constructor
+///////////////////////////////////////////////////////////////////////
 function Wikipedia(json){
   let lastIdx = (json.links.length - 1);
   this.year = json.year;
@@ -224,10 +208,15 @@ function Wikipedia(json){
   this.link = json.links[lastIdx].link;
 
   this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
-  // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
 
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//Weather API Call
+///////////////////////////////////////////////////////////////////////
 let locationArray = [];
+
+//Gets user's geo location
 function ipLookUp () {
   let url ='http://ip-api.com/json/'
   superagent.get(url)
@@ -237,12 +226,13 @@ function ipLookUp () {
     })
 }
 ipLookUp();
-
+//constructs persons location
 function Location(info) {
   this.lat = info.lat;
   this.lon =info.lon;
 }
 
+// Gets info from the darksky weather api based on date / location
 function weatherHandler(string, renderArray) {
   const birthday = string;
   // console.log('search: ' , string)
@@ -258,26 +248,38 @@ function weatherHandler(string, renderArray) {
     })
     .catch(error => errorHandler(error, req, res));
 }
-
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//Weather Constructor
+///////////////////////////////////////////////////////////////////////
 function Weather(weatherObj) {
   this.img = 'https://cdn2.iconfinder.com/data/icons/generic-06/100/Artboard_123-512.png'
   this.year = new Date((weatherObj.sunsetTime) * 1000).toISOString().split('T')[0];
   this.title = 'weather';
-  this.text = `${weatherObj.summary} high: ${weatherObj.temperatureHigh}  low: ${weatherObj.temperatureLow}  sunrise: ${new Date(weatherObj.sunriseTime * 1000).toLocaleTimeString()}  sunset: ${new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()}`
-  // this.summary = weatherObj.summary;
-  // this.high = weatherObj.temperatureHigh;
-  // this.low = weatherObj.temperatureLow;
-  // this.sunrise = new Date(weatherObj.sunriseTime * 1000).toLocaleTimeString()
-
-  // this.sunset = new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()
-
-
-
-  // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
+  this.text = `${weatherObj.summary} high: ${weatherObj.temperatureHigh}  low: ${weatherObj.temperatureLow}  sunrise: ${new Date(weatherObj.sunriseTime * 1000).toLocaleTimeString()}  sunset: ${new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()}`;
 }
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//Calendar API call
+///////////////////////////////////////////////////////////////////////
+function calendarHandler(array, renderArray) {
+  const day = array[2]; //day
+  const month = array[1]; //month
+  const year = array[0]; //year
+  const url = `https://calendarific.com/api/v2/holidays?api_key=${process.env.CALENDARIFIC_API}&country=US&year=${year}&day=${day}&month=${month}`;
 
+  superagent.get(url)
+    .then(data => {
+      let temp = JSON.parse(data.text);
+      let personsHoliday = new Holiday(temp.response.holidays[0]);
+      renderArray.push(personsHoliday);
+      console.log('calendar render array: ' , renderArray);
+    }).catch(error => errorHandler(error, req, res));
+}
+///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 // Calendarrific Constructor
+///////////////////////////////////////////////////////////////////////
 function Holiday(data){
   this.year = data.date.iso;
   this.text = data.description;
@@ -286,9 +288,10 @@ function Holiday(data){
   this.img = 'https://cdn.onlinewebfonts.com/svg/img_104943.png';
 
 }
-
+///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 // Calling all functions function
+///////////////////////////////////////////////////////////////////////
 function callingAllFunctions(weather, wiki, history, calendar, arrayOfDates, stringOfDates, renderArray){
   return new Promise(resolve => {
     resolve(weather(stringOfDates, renderArray));
@@ -297,9 +300,10 @@ function callingAllFunctions(weather, wiki, history, calendar, arrayOfDates, str
     resolve(history(arrayOfDates, renderArray));
   });
 }
-
-
-
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//Render all api calls
+///////////////////////////////////////////////////////////////////////
 function renderDetails(req, res){
   const day = req.body.search.slice(8); //day
   const month = req.body.search.slice(5,7); //month
@@ -373,28 +377,4 @@ function renderDetails(req, res){
         }).catch(error => errorHandler(error, req, res)); //wiki results promise end
 
     }).catch(error => errorHandler(error, req, res)); //weather results promise end
-
-  // console.log(dateStr);
-  // console.log(dateArr);
-  // callingAllFunctions(weatherHandler, wikiHandler, historyHandler, calendarHandler, dateArr, dateStr, renderArr);
-  // if(renderArr.length === 4){
-  //   res.status(200).render('pages/show', { event: renderArr });
 }
-
-
-// weatherOne (dateStr){
-//   url =something
-
-//   superagent(url).then(result => {
-//     renderArr.push(result);
-//   })
-// }
-
-// render array: [
-//   {weather results}
-//   {history results}
-//   {cal results}
-//   {wiki results}
-// ]
-
-// event.foreach(make a div using the data)
