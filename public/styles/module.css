@@ -143,13 +143,15 @@ header {
   margin-top: 0px;
 }
 
-th {
+/* ///////////////////////////////////////////////////////////////////////////// */
+/* Table Row EJS */
+/* ///////////////////////////////////////////////////////////////////////////// */
+th{
   border: 1px solid black;
   background-color: #f4efd3;
   color: black;
   width: 400px;
-  padding: 5px;
-  font-family: "PT Sans Narrow", sans-serif;
+  font-family:'PT Sans Narrow', sans-serif;
   font-size: 20px;
   height: 40px;
   line-height: 40px;
@@ -160,12 +162,23 @@ td {
   background-color: #f4efd3;
   color: black;
   width: 400px;
-  padding: 5px;
-  font-family: "PT Sans Narrow", sans-serif;
-  font-size: 1p6x;
+  font-family:'PT Sans Narrow', sans-serif;
+  font-size: 16px;
+  padding: 0;
   text-align: center;
   height: 40px;
   line-height: 40px;
+} 
+
+
+.linkToBirthday{
+  background-color: #555;
+  color: white;
+  padding: 1em 1.5em;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
 }
 
 #spinner {
@@ -199,3 +212,6 @@ td {
 #spinner.show {
   visibility: visible;
 }
+
+
+

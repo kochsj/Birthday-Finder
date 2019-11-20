@@ -44,9 +44,9 @@ app.get('/', homePage);
 app.post('/searches', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
-
 app.post('/searches', weatherHandler);
-
+app.put('/update/:id', updateBirthday);
+app.delete('/delete/:id', deleteBirthday);
 // app.post('/searches', calendarific);
 app.get('/saving', showForm)
 app.post('/saving', saveToDB);
@@ -90,7 +90,7 @@ function History(data) {
   this.title = '';
   this.year = data._attributes.date;
   this.text = data._attributes.content;
-  this.img = 'https://via.placeholder.com/150';
+  this.img = 'https://files.slack.com/files-pri/T039KG69K-FQCGM7Y4S/airplane.png';
   this.link = '';
 }
 ///////////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ function saveToDB(req, res) {
   let SQL = 'INSERT INTO birthdays(first_name, birthday) VALUES ($1, $2);';
   let values = [first_name, birthday];
 
-  return client.query(SQL, values)
+  client.query(SQL, values)
     .then(res.redirect('/database'))
     .catch( err => console.error(err));
 }
@@ -139,6 +139,27 @@ function saveToDB(req, res) {
 function showForm(req, res) {
   res.render('saving');
 }
+///////////////////////////////////////////////////////////////////////
+//Update Data Base
+function updateBirthday(req, res){
+  let SQL = 'UPDATE birthdays SET first_name=$1, birthday=$2 WHERE id=$3;';
+  let safeValues = [req.body.first_name, req.body.birthday, req.body.id];
+
+  client.query(SQL, safeValues).then(result => {
+    res.status(200).redirect('/database')
+  }).catch(error => errorHandler(error, req, res));
+}
+///////////////////////////////////////////////////////////////////////
+//Delete From Data Base
+function deleteBirthday(req, res){
+  let SQL = 'DELETE FROM birthdays WHERE id=$1;';
+  let safeValue = [req.params.id];
+
+  client.query(SQL, safeValue).then(result => {
+    res.status(200).redirect('/database')
+  }).catch(error => errorHandler(error, req, res));
+}
+
 ///////////////////////////////////////////////////////////////////////
 //Not Found
 function notFound(req, res) {
@@ -148,8 +169,7 @@ function notFound(req, res) {
 //Error Handler
 function errorHandler(error, req, res) {
   console.error(error);
-  // res.status(500).render('pages/error');
-  res.status(500).send(error);
+  res.status(500).render('pages/error');
 }
 ///////////////////////////////////////////////////////////////////////
 //Random Number Generator {by length of an object/array}
@@ -203,7 +223,7 @@ function Wikipedia(json){
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
 
-  this.img = 'url goes here';
+  this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
   // https://en.wikipedia.org/wiki/File:Wikipedia-logo-en-big.png
 }
 
@@ -283,8 +303,9 @@ function callingAllFunctions(weather, wiki, history, calendar, arrayOfDates, str
 function renderDetails(req, res){
   const day = req.body.search.slice(8); //day
   const month = req.body.search.slice(5,7); //month
-  const year = req.body.search.slice(0,4); //year
-  app.locals.BD = req.body.search
+  const year = req.body.search.slice(0,4); //year (adjusted to catch errors in length)
+  //Method on express app that allows anything on the server (for us ejs) to access this variable.
+  app.locals.BD = req.body.search;
   const dateStr = req.body.search;
   // const dateArr = [year, month, day];
   let renderArr = [];

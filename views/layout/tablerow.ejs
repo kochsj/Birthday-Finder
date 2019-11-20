@@ -2,14 +2,50 @@
         <th>Name</th>
         <th>Birthday</th>
         <th>Link</th>
+        <th>Update</th>
+        <th>Delete</th>
     </tr>
-<% person.forEach(bday => { %>
-    <tr>
+
+    <% person.forEach(bday => { %>
+    <tr id=<%= bday.id%>>
         <td><%= bday.first_name %></td>
         <td><%= bday.birthday %></td>
-        <td> <form action="/searches" method="post">
-        <input type="hidden" name="search" value=<%= bday.birthday %>>
-        <button>Go</button>
-        </form></td>
+        <td> 
+            <form action="/searches" method="post">
+                <input type="hidden" name="search" value=<%= bday.birthday %>>
+                <button>Go</button>
+            </form>
+        </td>
+        <td>
+            <button class="open-button-two" onclick="openForm(<%=bday.id%>)">Update</button>
+            <div class="form-popup" id="myForm<%=bday.id%>">
+            <form action="/update/<%=bday.id%>" class="form-container" method="post">
+            <input type="hidden" name="_method" value="put">
+            <input type="text"  name="first_name" value=<%=bday.first_name%>>
+            <input type="text" name="birthday" value=<%=bday.birthday%>>
+            <input type="hidden" name="id" value=<%=bday.id%>>
+            <button type="submit" class="btn">Save changes</button>
+            <button type="button" class="btn cancel" onclick="closeForm(<%=bday.id%>)">Close</button>
+            </form>
+            </div>
+        </td>
+        <td>
+        <form class="deleteForm"action="/delete/<%=bday.id%>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        </form>
+        <button class ="open-button-two"type="submit"  id="<%= bday.id %>">delete book</button>
+     </td>
+        
     </tr>
 <% }) %>
+
+
+<script>
+function openForm(x) {
+  document.getElementById(`myForm${x}`).style.display = "block";
+}
+
+function closeForm(x) {
+  document.getElementById(`myForm${x}`).style.display = "none";
+}
+</script>
