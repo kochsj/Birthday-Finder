@@ -130,7 +130,7 @@ function saveToDB(req, res) {
   let SQL = 'INSERT INTO birthdays(first_name, birthday, id) VALUES ($1, $2, $3);';
   let values = [first_name, birthday];
 
-  return client.query(SQL, values)
+  client.query(SQL, values)
     .then(res.redirect('/database'))
     .catch( err => console.error(err));
 }
@@ -143,11 +143,21 @@ function showForm(req, res) {
 function updateBirthday(req, res){
   let SQL = 'UPDATE birthdays SET first_name=$1, birthday=$2 WHERE id=$3;';
   let safeValues = [req.body.first_name, req.body.birthday, req.body.id];
+
   client.query(SQL, safeValues).then(result => {
     res.status(200).redirect('/database')
   }).catch(error => errorHandler(error, req, res));
 }
+///////////////////////////////////////////////////////////////////////
+//Delete From Data Base
+function deleteBirthday(req, res){
+  let SQL = 'DELETE FROM birthdays WHERE id=$1;';
+  let safeValue = [req.body.id];
 
+  client.query(SQL, safeValue).then(result => {
+    res.status(200).redirect('/database')
+  }).catch(error => errorHandler(error, req, res));
+}
 
 ///////////////////////////////////////////////////////////////////////
 //Not Found
@@ -293,8 +303,9 @@ function callingAllFunctions(weather, wiki, history, calendar, arrayOfDates, str
 function renderDetails(req, res){
   const day = req.body.search.slice(8); //day
   const month = req.body.search.slice(5,7); //month
-  const year = req.body.search.slice(0,4); //year
-  app.locals.BD = req.body.search
+  const year = req.body.search.slice(0,4); //year (adjusted to catch errors in length)
+  //Method on express app that allows anything on the server (for us ejs) to access this variable.
+  app.locals.BD = req.body.search;
   const dateStr = req.body.search;
   // const dateArr = [year, month, day];
   let renderArr = [];
