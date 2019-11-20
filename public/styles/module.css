@@ -170,11 +170,11 @@ td {
 
 #spinner {
   visibility: hidden;
-  width: 80px;
-  height: 80px;
+  width: 150px;
+  height: 150px;
 
-  border: 2px solid #f3f3f3;
-  border-top: 3px solid #f25a41;
+  border: 10px solid #f3f3f3;
+  border-top: 15px solid #9656a1;
   border-radius: 100%;
 
   position: absolute;
