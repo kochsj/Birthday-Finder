@@ -1,0 +1,167 @@
+/* ////////////////////////////////////////////////////// */
+/* add.ejs (form to add to Database template) */
+/* ////////////////////////////////////////////////////// */
+
+/* ////////////////////////////////////////////////////// */
+/* person.ejs (About us -- single person's template) */
+/* ////////////////////////////////////////////////////// */
+
+/* ////////////////////////////////////////////////////// */
+/* result.ejs (results template) */
+/* ////////////////////////////////////////////////////// */
+.results-div{
+  /* Background Color */
+  background-color: #C2B0C9;
+  /* Layout(technically) just wide enough that only two can fit per row, then flex wrap to the next row */
+  width: 34%;
+  margin-bottom: 10vw;
+  /* Flex Container */
+  flex-direction: row;
+  text-align: center;
+  /* Padding (so that items don't run right into the border of the div) */
+  padding: 2em;
+}
+.results-div h3, .results-div p, .results-div img {
+  /* Space between each element in the results template (so they dont touch) */
+  margin-bottom: 1em;
+  /* Padding to push content closer to the center, while still centered */
+  padding-left: 5em;
+  padding-right: 5em;
+}
+.results-div img{
+  width: 50%;
+}
+/* ////////////////////////////////////////////////////// */
+/* search.ejs (search template) */
+/* ////////////////////////////////////////////////////// */
+#searches-form{
+  /* Basic Attributes */
+  background-color: #C2B0C9;
+  width: 40vw;
+  border-radius: 1em;
+  /* Text */
+  text-align: center;
+}
+#searches-form h3{
+  font-size: 2.5em;
+  padding: 1em;
+}
+#searches-form input{
+  /* Sizing */
+  height: 4.5em;
+  width: 50%;
+  /* Background Color */
+  background-color: #CCCCCC;
+  /* Text */
+  font-size: 1em;
+  text-align: center;
+  /* Layout center&column */
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+#searches-form button{
+  /* Sizing */
+  height: 3.5em;
+  width: 33%;
+  /* Background Color */
+  background-color: #CCCCCC;
+  border: black solid 0.1em;
+  /* Text */
+
+  /* Layout center&column */
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  /* Margin Top&Bottom */
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+/* ////////////////////////////////////////////////////// */
+/* HEADER.ejs (header template) */
+/* ////////////////////////////////////////////////////// */
+header{
+  /* Background Color */
+  background-color: #9656A1;
+  /* Text */
+  text-align: center;
+  color: #CCCCCC;
+}
+.headerwrapper {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 0px;
+  grid-auto-rows: minmax(0px, auto);
+}
+.headerone {
+  grid-column: 1 /3 ;
+  grid-row: 1;
+}
+.headertwo { 
+  grid-column: 3 / 9;
+  grid-row: 1;
+  font-size: 5em;
+  line-height: 150px;
+}
+.headerthree {
+  grid-column: 9/11;
+  grid-row: 1;
+}
+.headerfour {
+  grid-column:1/3 ;
+  grid-row: 2;
+}
+.headerfive {
+  grid-column: 3/9;
+  grid-row: 2;
+}
+.headersix {
+  grid-column: 9/11;
+  grid-row: 2;
+}
+.headerimg {
+  width: 125px;
+}
+.headerbutton {
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background-color: lightblue;
+    border: 2px solid black;
+}
+.headerLink {
+  color:white;
+}
+
+.headerAboutUs {
+color:black;
+}
+
+.team {
+  width: 75%;
+  margin-top: 0px;
+}
+
+th{
+  border: 1px solid black;
+  background-color: #F4EFD3;
+  color: black;
+  width: 400px;
+  padding: 5px;
+  font-family:'PT Sans Narrow', sans-serif;
+  font-size: 20px;
+  height: 40px;
+  line-height: 40px;
+} 
+
+td{
+  border: 1px solid black;
+  background-color: #F4EFD3;
+  color: black;
+  width: 400px;
+  padding: 5px;
+  font-family:'PT Sans Narrow', sans-serif;
+  font-size: 1p6x;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+} 

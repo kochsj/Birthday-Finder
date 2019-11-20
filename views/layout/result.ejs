@@ -1,0 +1,9 @@
+<% event.forEach(division => { %>
+  <div class="results-div">
+    <img alt="placeholder" src=<%= division.img %>>
+    <h3><%= division.year %> - <%= division.title %></h3>
+    <p><%= division.text %></p>
+    <a alt="Wikipedia" href="<%= division.link %>" target="_blank"></a>
+  </div>
+<% }) %>
+

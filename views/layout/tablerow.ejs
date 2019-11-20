@@ -1,0 +1,15 @@
+    <tr>
+        <th>Name</th>
+        <th>Birthday</th>
+        <th>Link</th>
+    </tr>
+<% person.forEach(bday => { %>
+    <tr>
+        <td><%= bday.first_name %></td>
+        <td><%= bday.birthday %></td>
+        <td> <form action="/searches" method="post">
+        <input type="hidden" name="search" value=<%= bday.birthday %>>
+        <button>Go</button>
+        </form></td>
+    </tr>
+<% }) %>
