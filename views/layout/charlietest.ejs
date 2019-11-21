@@ -1,25 +1,11 @@
-<button class="open-button" onclick="openForm()">Add to Database</button>
-
-<div class="form-popup" id="myForm">
-  <form action="/saving" class="form-container" method="post">
-
-
-    <input type="text" placeholder="enter first name" name="first_name" required>
-
-
-    <input type="hidden" name="birthday" value=<%=BD%>>
-
-    <button type="submit" class="btn">Add to DB</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
+<div id="open-button">
+  <button id='callToAction'onclick="openForm()">Add to Database</button>
+  <div id="myForm" style="display: none;">
+    <form action="/saving" class="form-container" method="post">
+      <input type="text" placeholder="enter first name" name="first_name" required>
+      <input type="hidden" name="birthday" value=<%=BD%>>
+      <button type="submit" id="btn-add">Add to DB</button>
+      <!-- <button type="button" id="btn-cancel" onclick="closeForm()">Close</button> -->
+    </form>
+  </div>
 </div>
-
-<script>
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
-</script>
