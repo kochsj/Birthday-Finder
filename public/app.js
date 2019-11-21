@@ -24,3 +24,8 @@ function closeForm() {
   $("#myForm").toggle();
   $('#callToAction').toggle();
 }
+
+var typed = new Typed(".typedelement", {
+  strings: ["What Happened", "On the day you were born?"],
+  typeSpeed: 40
+});
