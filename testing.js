@@ -309,6 +309,6 @@ function renderDetails(req, res){
   //   let promises = [weatherHandler(weatherURL, dateStr), calendarHandler(calandarURL, dateArr), wikiHandler(wikiURL, dateArr), historyHandler(histURL, dateArr)];
   //  console.log(promises);
   Promise.all([weatherHandler(weatherURL, dateStr), calendarHandler(calandarURL, dateArr), wikiHandler(wikiURL, dateArr), historyHandler(histURL, dateArr)]).then(results => {
-    res.status(200).render('pages/show', {event: objects})
+    res.status(200).render('pages/show', {event: results})
   })
 }
