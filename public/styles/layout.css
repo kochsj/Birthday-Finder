@@ -5,8 +5,14 @@ main{
   flex-wrap: wrap;
   justify-content: space-evenly;
   /* space between the nav and content */
-  padding-top: 10vw;
+  /* padding-top: 10vw; */
 }
 body {
   position: relative;
+  margin-top: 15em;
+}
+header{
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 }

@@ -8,6 +8,19 @@ function showSpinner() {
   spinner.className = "show";
   setTimeout(() => {
     spinner.className = spinner.className.replace("show", "");
-  }, 5000);
+  }, 6000);
   //
+}
+
+
+
+$("#open-button").hover(function(){
+  $("#myForm").toggle();
+  $('#callToAction').toggle();
+});
+
+
+function closeForm() {
+  $("#myForm").toggle();
+  $('#callToAction').toggle();
 }
