@@ -7,3 +7,6 @@ main{
   /* space between the nav and content */
   padding-top: 10vw;
 }
+body {
+  position: relative;
+}
