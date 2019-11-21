@@ -145,7 +145,7 @@ function historyHandler(array, renderArray) {
     // console.log(events);
     renderArray.push(thisPersonsEvent);
     console.log('history render array: ' , renderArray);
-  }).catch(error => console.error(error));
+  });
 }
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -194,7 +194,7 @@ function wikiHandler(array, renderArray){
         renderArray.push(article);
         console.log('wiki render array: ' , renderArray);
       }
-    }).catch(error => console.error(error));
+    }).catch(error => errorHandler(error, req, res));
 }
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -245,7 +245,8 @@ function weatherHandler(string, renderArray) {
       console.log('weather data: ' , weatherArray);
       renderArray.push(weatherArray);
       console.log('render array: ' , renderArray);
-    }).catch(error => console.error(error));
+    })
+    .catch(error => errorHandler(error, req, res));
 }
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -273,7 +274,7 @@ function calendarHandler(array, renderArray) {
       let personsHoliday = new Holiday(temp.response.holidays[0]);
       renderArray.push(personsHoliday);
       console.log('calendar render array: ' , renderArray);
-    }).catch(error => console.error(error));
+    }).catch(error => errorHandler(error, req, res));
 }
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
