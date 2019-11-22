@@ -12,6 +12,7 @@
 .results-div {
   /* Background Color */
   background-color: #c2b0c9;
+  font-size: 1.2em;
   /* Layout(technically) just wide enough that only two can fit per row, then flex wrap to the next row */
   width: 34%;
   margin-bottom: 10vw;
@@ -27,8 +28,8 @@
   /* Space between each element in the results template (so they dont touch) */
   margin-bottom: 1em;
   /* Padding to push content closer to the center, while still centered */
-  padding-left: 5em;
-  padding-right: 5em;
+  /* padding-left: 5em;
+  padding-right: 5em; */
 }
 .results-div img {
   width: 50%;
@@ -166,22 +167,22 @@ header {
 /* ///////////////////////////////////////////////////////////////////////////// */
 table{
   background-color: #C2B0C9;
-  color: #f4efd3;
+  color: black;
 }
 th{
   border: 1px solid black;
   background-color: #9656A1;
-  width: 10em;
+  font-size: 2em;
+  width: 7em;
   font-family:'PT Sans Narrow', sans-serif;
-  font-size: 20px;
   height: 40px;
   line-height: 40px;
 }
 td {
   border: 1px solid black;
-  width: 10em;
+  width: 7em;
   font-family:'PT Sans Narrow', sans-serif;
-  font-size: 16px;
+  font-size: 1em;
   padding-top: 0.3em;
   text-align: center;
   height: 40px;
@@ -192,6 +193,7 @@ td {
 }
 .buttonTD button{
   background-color: #C2B0C9;
+  font-size: 1em;
   border: none;
   height: 90%;
   width: 100%;
@@ -201,12 +203,18 @@ td {
 }
 .form-popup {
   position: fixed;
-  bottom: 50%;
-  right: 40%;
+  top: 35%;
+  right: 33%;
   border: 3px solid #f1f1f1;
-  z-index: 9;
+  overflow: hidden;
 }
-
+.open-button-two{
+  height: 100%;
+}
+#pauls-pic{
+  width: 14em;
+  height: 16em;
+}
 /* ///////////////////////////////////////////////////////////////////////////// */
 /* Page Loading Spinner */
 /* ///////////////////////////////////////////////////////////////////////////// */

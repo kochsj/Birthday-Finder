@@ -19,13 +19,21 @@ $("#open-button").hover(function(){
   $('#callToAction').toggle();
 });
 
+// $('#firstName').attr('autocomplete', 'off');
 
-function closeForm() {
-  $("#myForm").toggle();
-  $('#callToAction').toggle();
-}
+// function closeForm() {
+//   $("#myForm").toggle();
+//   $('#callToAction').toggle();
+// }
 
 var typed = new Typed(".typedelement", {
-  strings: ["What Happened", "On the day you were born?"],
-  typeSpeed: 40
+  strings: [
+    "What Happened?",
+    "On the day you were born? ",
+    "Enter your birthday:"
+  ],
+  typeSpeed: 60,
+  smartBackspace: true, // this is a default
+  loop: false,
+  showCursor: false
 });

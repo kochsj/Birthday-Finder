@@ -200,13 +200,20 @@ function wikiHandler(array, renderArray){
 ///////////////////////////////////////////////////////////////////////
 //Wikipedia Constructor
 ///////////////////////////////////////////////////////////////////////
-function Wikipedia(json){
+function Wikipedia(json, d, m){
   let lastIdx = (json.links.length - 1);
-  this.year = json.year;
+  this.year = `In ${json.year} on ${m}/${d}: `;
   this.text = json.text;
   this.title = json.links[lastIdx].title;
   this.link = json.links[lastIdx].link;
-
+  this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
+}
+function ExactWiki(json, d, m){
+  let lastIdx = (json.links.length - 1);
+  this.year = `On ${m}/${d}/${json.year}`;
+  this.text = json.text;
+  this.title = json.links[lastIdx].title;
+  this.link = json.links[lastIdx].link;
   this.img = 'https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png';
 }
 
@@ -252,11 +259,24 @@ function weatherHandler(string, renderArray) {
 ///////////////////////////////////////////////////////////////////////
 //Weather Constructor
 ///////////////////////////////////////////////////////////////////////
-function Weather(weatherObj) {
-  this.img = 'https://cdn2.iconfinder.com/data/icons/generic-06/100/Artboard_123-512.png'
-  this.year = new Date((weatherObj.sunsetTime) * 1000).toISOString().split('T')[0];
+function dayOfWeek(x) {
+  var b = new Date(`${x}`).getTime();
+  var d = new Date((b + 57600000)).getDay();
+  var weekday = ['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  return weekday[d]
+}
+
+function Weather(weatherObj, birthday) {
+  this.img = 'https://www.freeiconspng.com/uploads/weather-icon-png-16.png'
+  this.year = `${dayOfWeek(birthday)}, ${new Date((weatherObj.sunsetTime) * 1000).toISOString().split('T')[0]}`;
   this.title = 'weather';
   this.text = `${weatherObj.summary} high: ${weatherObj.temperatureHigh}  low: ${weatherObj.temperatureLow}  sunrise: ${new Date(weatherObj.sunriseTime * 1000).toLocaleTimeString()}  sunset: ${new Date(weatherObj.sunsetTime * 1000).toLocaleTimeString()}`;
+}
+function HourlyWeather(dailyObj, birthday) {
+  this.img = 'https://www.freeiconspng.com/uploads/weather-icon-png-16.png';
+  this.year =`${dayOfWeek(birthday)}, ${new Date((dailyObj.time) * 1000).toISOString().split('T')[0]}`;
+  this.title='Weather';
+  this.text = `Summary: ${dailyObj.summary}   Average Temperature: ${dailyObj.temperature}    Chance of Rain: ${dailyObj.precipProbability}    Wind Speed: ${dailyObj.windSpeed}`;
 }
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -313,16 +333,22 @@ function renderDetails(req, res){
   const dateStr = req.body.search;
   // const dateArr = [year, month, day];
   let renderArr = [];
+  let wikiArr = [];
 
   let epoch = new Date(`${dateStr}`).getTime() / 1000
   let weatherUrl = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${locationArray[0].lat},${locationArray[0].lon},${epoch}`;
 
   superagent.get(weatherUrl)
     .then(results => {
-      let weatherArray = new Weather(results.body.daily.data[0]);
-      console.log('weather data: ' , results.body.daily.data[0]);
-      renderArr.push(weatherArray);
-      // console.log('render array: ' , renderArr);
+      console.log(results.body.hourly.data[1])
+      if(results.body.daily) {
+        let weatherArray = new Weather(results.body.daily.data[0], dateStr);
+        renderArr.push(weatherArray);
+      }
+      else {
+        let weatherArray = new HourlyWeather(results.body.hourly.data[1], dateStr);
+        renderArr.push(weatherArray);
+      }
     }).then(results => {
       /////////////////wiki call
       let wikiUrl = `http://history.muffinlabs.com/date/${month}/${day}`;
@@ -336,21 +362,39 @@ function renderDetails(req, res){
               return true;
             }else {return false;}
           });
-
           if(usersEventsTheirYear.length > 0){
-            let article = new Wikipedia(usersEventsTheirYear[0]);
-            // console.log('match!!: ');
-            // console.log(article);
+            let article = new ExactWiki(usersEventsTheirYear[0], day, month);
             renderArr.push(article);
-            console.log('wiki render array: ' , renderArr);
+            let tempArr =[]
+            for(let i=0; i < 4; i++){
+              let randomEvent = randomNumber(jsonData.data.Events);
+              while(tempArr.includes(randomEvent)){
+                randomEvent = randomNumber(jsonData.data.Events);
+              }
+              tempArr.push(randomEvent);
+            }
+            console.log('temp arr: ', tempArr);
+            for(let j=0; j < tempArr.length; j++){
+              let usersEventsTheirDay = jsonData.data.Events[tempArr[j]];
+              let article = new Wikipedia(usersEventsTheirDay, day, month);
+              wikiArr.push(article);
+            }
           } else {
-            let randomEvent = randomNumber(jsonData.data.Events);
-            let usersEventsTheirDay = jsonData.data.Events[randomEvent];
-            let article = new Wikipedia(usersEventsTheirDay);
-            // console.log('no match: ');
-            // console.log(article);
-            renderArr.push(article);
-            // console.log('wiki render array: ' , renderArr);
+            let tempArr =[]
+            for(let i=0; i < 4; i++){
+              let randomEvent = randomNumber(jsonData.data.Events);
+              while(tempArr.includes(randomEvent)){
+                randomEvent = randomNumber(jsonData.data.Events);
+              }
+              tempArr.push(randomEvent);
+            }
+            console.log('temp arr: ', tempArr);
+            for(let j=0; j < tempArr.length; j++){
+              let usersEventsTheirDay = jsonData.data.Events[tempArr[j]];
+              let article = new Wikipedia(usersEventsTheirDay, day, month);
+              wikiArr.push(article);
+            }
+            renderArr.push(wikiArr[0]);
           }
         }).then(results => {
           const calendarUrl = `https://calendarific.com/api/v2/holidays?api_key=${process.env.CALENDARIFIC_API}&country=US&year=${year}&day=${day}&month=${month}`;
@@ -360,6 +404,7 @@ function renderDetails(req, res){
               if(temp.response.holidays.length > 0){
                 let personsHoliday = new Holiday(temp.response.holidays[0]);
                 renderArr.push(personsHoliday);
+                if(wikiArr[1]){renderArr.push(wikiArr[1]);}
               }
               // console.log('calendar render array: ' , renderArr);
             }).then(results => {
@@ -369,6 +414,8 @@ function renderDetails(req, res){
                 let events = data.aviation.events.event[0];
                 let thisPersonsEvent = new History(events);
                 renderArr.push(thisPersonsEvent);
+                if(wikiArr[2]){renderArr.push(wikiArr[2]);}
+                if(wikiArr[3]){renderArr.push(wikiArr[3]);}
                 // console.log('history render array: ' , renderArr);
               }).then(results => {
                 res.status(200).render('pages/show', { event: renderArr })

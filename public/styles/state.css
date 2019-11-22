@@ -2,22 +2,28 @@
 
 /* Button used to open the contact form - fixed at the bottom of the page */
 #open-button{
+  height: 10em;
   display: flex;
+  align-items: center;
   flex-direction: row;
-  background-color: #555;
+  background-color: #9656A1;
   color: white;
   padding: 0.6em 0.9em;
   cursor: pointer;
   opacity: 0.8;
   margin-top: 0;
-  border: 0.2em solid black;
+  border-top: 0.2em solid black;
+  border-right: 0.2em solid black;
+  border-bottom: 0.2em solid black;
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
   position: fixed;
-  top: 50%;
+  top: 25%;
 }
 #callToAction{
-  background-color: #555;
+  background-color: #9656A1;
   color: white;
-  width: 4em;
+  width: 5em;
   height: 10em;
   border: none;
 }
@@ -43,7 +49,7 @@
 
 /* Add styles to the form container */
 .form-container {
-  width: 100%;
+  width: 94%;
   padding: 1em;
   background-color: white;
 }
@@ -67,7 +73,7 @@
 .form-container .btn {
   background-color: #4CAF50;
   color: white;
-  cursor: pointer;
+    cursor: pointer;
   padding: 16px 20px;
   border: none;
   cursor: pointer;

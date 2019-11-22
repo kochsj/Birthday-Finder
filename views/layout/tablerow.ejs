@@ -11,7 +11,7 @@
         <td><%= bday.first_name %></td>
         <td><%= bday.birthday %></td>
         <td class="buttonTD"> 
-            <form action="/searches" method="post">
+            <form class ="open-button-two" action="/searches" method="post">
                 <input type="hidden" name="search" value=<%= bday.birthday %>>
                 <button onclick="showSpinner()">Check it out!</button>
             </form>
@@ -30,9 +30,9 @@
             </div>
         </td>
         <td class="buttonTD">
-            <form class="deleteForm"action="/delete/<%=bday.id%>" method="post">
+            <form class="deleteForm open-button-two"action="/delete/<%=bday.id%>" method="post">
                 <input type="hidden" name="_method" value="delete">
-                <button class ="open-button-two"type="submit"  id="<%= bday.id %>">Delete</button>
+                <button type="submit" id="<%= bday.id %>">Delete</button>
             </form>
      </td>
         
