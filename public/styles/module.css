@@ -19,6 +19,7 @@
   /* Flex Container */
   flex-direction: row;
   text-align: center;
+  border-radius: 1em;
   /* Padding (so that items don't run right into the border of the div) */
   padding: 2em;
 }
