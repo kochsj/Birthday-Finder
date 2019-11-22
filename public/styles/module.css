@@ -38,9 +38,12 @@
 /* search.ejs (search template) */
 /* ////////////////////////////////////////////////////// */
 #searches-form {
+  display: flex;
+  flex-direction: column-reverse;
   /* Basic Attributes */
   background-color: #c2b0c9;
   width: 40vw;
+  height: 17vw;
   border-radius: 1em;
   margin-top: 2em;
   /* Text */
