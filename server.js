@@ -54,7 +54,6 @@ app.use(errorHandler);
 
 // Getting today's date
 app.locals.today = new Date().toISOString().split('T')[0];
-console.log('THIS IS WHAT WE WANT RIGHT NOW THENAK YO $$#%^%@^^@: ', app.locals.today);
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -277,7 +276,7 @@ function HourlyWeather(dailyObj, birthday) {
   this.img = 'https://www.freeiconspng.com/uploads/weather-icon-png-16.png';
   this.year =`${dayOfWeek(birthday)}, ${new Date((dailyObj.time) * 1000).toISOString().split('T')[0]}`;
   this.title='Weather';
-  this.text = `Summary: ${dailyObj.summary}   Average Temperature: ${dailyObj.temperature}    Chance of Rain: ${dailyObj.precipProbability}    Wind Speed: ${dailyObj.windSpeed}`;
+  this.text = `Summary: ${dailyObj.summary} / Average Temperature: ${dailyObj.temperature} / Chance of Rain: ${dailyObj.precipProbability}% / Wind Speed: ${dailyObj.windSpeed}mph`;
 }
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -342,14 +341,14 @@ function renderDetails(req, res){
   superagent.get(weatherUrl)
     .then(results => {
       console.log(results.body.hourly.data[1])
-      if(results.body.daily) {
-        let weatherArray = new Weather(results.body.daily.data[0], dateStr);
-        renderArr.push(weatherArray);
-      }
-      else {
-        let weatherArray = new HourlyWeather(results.body.hourly.data[1], dateStr);
-        renderArr.push(weatherArray);
-      }
+      // if(results.body.daily) {
+      //   let weatherArray = new Weather(results.body.daily.data[0], dateStr);
+      //   renderArr.push(weatherArray);
+      // }
+      // else {
+      let weatherArray = new HourlyWeather(results.body.hourly.data[1], dateStr);
+      renderArr.push(weatherArray);
+      // }
     }).then(results => {
       /////////////////wiki call
       let wikiUrl = `http://history.muffinlabs.com/date/${month}/${day}`;
