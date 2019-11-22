@@ -44,7 +44,7 @@ app.get('/', homePage);
 app.post('/searches', renderDetails);
 app.get('/aboutus', renderAboutUs);
 app.get('/database', renderDatabase);
-app.post('/searches', weatherHandler);
+// app.post('/searches', weatherHandler);
 app.put('/update/:id', updateBirthday);
 app.delete('/delete/:id', deleteBirthday);
 app.get('/saving', showForm)
@@ -54,6 +54,7 @@ app.use(errorHandler);
 
 // Getting today's date
 app.locals.today = new Date().toISOString().split('T')[0];
+console.log('THIS IS WHAT WE WANT RIGHT NOW THENAK YO $$#%^%@^^@: ', app.locals.today);
 
 
 ///////////////////////////////////////////////////////////////////////
